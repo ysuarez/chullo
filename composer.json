@@ -1,0 +1,21 @@
+{
+    "name": "islandora/fcrepo-client",
+    "description": "A PHP client for interacting with a Fedora 4 server.",
+    "require": {
+        "guzzlehttp/guzzle": "6.1.0"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "6.1.0",
+        "phpunit/phpunit": "^4.8"
+    },
+    "license": "GPL v3",
+    "authors": [
+        {
+            "name": "Daniel Lamb",
+            "email": "daniel@discoverygarden.ca"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Islandora\\Fedora\\": "src/"}
+    }
+}
