@@ -15,7 +15,7 @@
  * @link     http://www.islandora.ca
  */
 
-namespace Islandora\Fedora;
+namespace Islandora\Churro;
 
 /**
  * Interface for Fedora interaction.

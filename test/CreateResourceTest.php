@@ -4,7 +4,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Islandora\Fedora\FedoraClient;
+use Islandora\Churro\FedoraClient;
 
 class CreateResourceTest extends \PHPUnit_Framework_TestCase {
 
@@ -18,7 +18,7 @@ class CreateResourceTest extends \PHPUnit_Framework_TestCase {
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler]);
+        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
         $client = new FedoraClient($guzzle);
 
         $result = $client->createResource("");
@@ -36,7 +36,7 @@ class CreateResourceTest extends \PHPUnit_Framework_TestCase {
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler]);
+        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
         $client = new FedoraClient($guzzle);
 
         $result = $client->createResource("");
@@ -53,7 +53,7 @@ class CreateResourceTest extends \PHPUnit_Framework_TestCase {
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler]);
+        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
         $client = new FedoraClient($guzzle);
 
         $result = $client->createResource("");

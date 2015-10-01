@@ -1,6 +1,6 @@
 <?php
 
-namespace Islandora\Fedora;
+namespace Islandora\Churro;
 
 use GuzzleHttp\Client;
 
