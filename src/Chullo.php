@@ -36,6 +36,11 @@ class Chullo implements IFedoraClient {
         $this->client = $client;
     }
 
+    static public function create($fedora_rest_url) {
+        $guzzle = new Client(['base_uri' => $fedora_rest_url]);
+        return new Chullo($guzzle);
+    }
+
     /**
      * Gets the Fedora base uri (e.g. http://localhost:8080/fcrepo/rest)
      *
