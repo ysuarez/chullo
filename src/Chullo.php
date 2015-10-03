@@ -99,6 +99,11 @@ class Chullo implements IFedoraClient {
 
         $headers['Accept'] = 'application/ld+json';
         $rdf = (string)$this->getResource($uri, $headers, $transaction);
+
+        if (empty($rdf)) {
+            return null;
+        }
+
         $graph = new \EasyRdf_Graph();
         $graph->parse($rdf, 'jsonld');
         return $graph;
@@ -193,7 +198,7 @@ class Chullo implements IFedoraClient {
      * Saves RDF in Fedora.
      *
      * @param string            $uri            Resource URI
-     * @param EasyRdf_Resource  $rdf            RDF to save
+     * @param EasyRdf_Resource  $graph          Graph to save
      * @param string            $transaction    Transaction id
      *
      * @return null
