@@ -6,9 +6,11 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "6.1.0",
+        "easyrdf/easyrdf": "0.9.0",
+        "ml/json-ld":   "1.0.3",
         "phpunit/phpunit": "^4.8"
     },
-    "license": "GPL v3",
+    "license": "GPLv3",
     "authors": [
         {
             "name": "Daniel Lamb",
@@ -16,6 +18,6 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Islandora\\Churro\\": "src/"}
+        "psr-4": {"Islandora\\Chullo\\": "src/"}
     }
 }

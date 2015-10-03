@@ -4,12 +4,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Islandora\Churro\FedoraClient;
+use Islandora\Chullo\Chullo;
 
 class ExtendTransactionTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @covers  Islandora\Fedora\FedoraClient::extendTransaction
+     * @covers  Islandora\Fedora\Chullo::extendTransaction
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsNullOn204() {
@@ -19,14 +19,14 @@ class ExtendTransactionTest extends \PHPUnit_Framework_TestCase {
 
         $handler = HandlerStack::create($mock);
         $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new FedoraClient($guzzle);
+        $client = new Chullo($guzzle);
 
         $result = $client->extendTransaction("tx:abc-123");
         $this->assertNull($result);
     }
 
     /**
-     * @covers            Islandora\Fedora\FedoraClient::extendTransaction
+     * @covers            Islandora\Fedora\Chullo::extendTransaction
      * @uses              GuzzleHttp\Client
      * @expectedException GuzzleHttp\Exception\ClientException
      */
@@ -37,7 +37,7 @@ class ExtendTransactionTest extends \PHPUnit_Framework_TestCase {
 
         $handler = HandlerStack::create($mock);
         $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new FedoraClient($guzzle);
+        $client = new Chullo($guzzle);
 
         $result = $client->extendTransaction("tx:abc-123");
     }

@@ -15,7 +15,7 @@
  * @link     http://www.islandora.ca
  */
 
-namespace Islandora\Churro;
+namespace Islandora\Chullo;
 
 /**
  * Interface for Fedora interaction.
@@ -44,9 +44,22 @@ interface IFedoraClient
      *
      * @return mixed    String or binary content if 200.  Null if 304.
      */
-    public function getResource($uri,
+    public function getResource($uri = "",
                                 $headers = [],
                                 $transaction = "");
+
+    /**
+     * Gets RDF metadata from Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param array     $headers        HTTP Headers
+     * @param string    $transaction    Transaction id
+     *
+     * @return EasyRdf_Graph
+     */
+    public function getGraph($uri = "",
+                             $headers = [],
+                             $transaction = "");
 
     /**
      * Creates a new resource in Fedora.
@@ -59,14 +72,14 @@ interface IFedoraClient
      *
      * @return string   Uri of newly created resource
      */
-    public function createResource($uri,
+    public function createResource($uri = "",
                                    $content = null,
                                    $headers = [],
                                    $transaction = "",
                                    $checksum = "");
 
     /**
-     * Upserts a resource in Fedora.
+     * Saves a resource in Fedora.
      *
      * @param string    $uri            Resource URI
      * @param string    $content        String or binary content
@@ -76,11 +89,24 @@ interface IFedoraClient
      *
      * @return null
      */
-    public function upsertResource($uri,
-                                   $content = null,
-                                   $headers = [],
-                                   $transaction = "",
-                                   $checksum = "");
+    public function saveResource($uri,
+                                 $content = null,
+                                 $headers = [],
+                                 $transaction = "",
+                                 $checksum = "");
+
+    /**
+     * Saves RDF in Fedora.
+     *
+     * @param string            $uri            Resource URI
+     * @param EasyRdf_Resource  $rdf            RDF to save
+     * @param string            $transaction    Transaction id
+     *
+     * @return null
+     */
+    public function saveGraph($uri,
+                              \EasyRdf_Graph $graph,
+                              $transaction = "");
 
     /**
      * Modifies a resource using a SPARQL Update query.

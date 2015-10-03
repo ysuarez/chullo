@@ -1,10 +1,34 @@
 <?php
 
-namespace Islandora\Churro;
+/**
+ * This file is part of Islandora.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * PHP Version 5.5.9
+ *
+ * @category Islandora
+ * @package  Islandora
+ * @author   Daniel Lamb <daniel@discoverygarden.ca>
+ * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GPL
+ * @link     http://www.islandora.ca
+ */
+
+namespace Islandora\Chullo;
 
 use GuzzleHttp\Client;
 
-class FedoraClient implements IFedoraClient {
+/**
+ * Default implementation of IFedoraClient using Guzzle.
+ *
+ * @category Islandora
+ * @package  Islandora
+ * @author   Daniel Lamb <daniel@discoverygarden.ca>
+ * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GPL
+ * @link     http://www.islandora.ca
+ */
+class Chullo implements IFedoraClient {
 
     protected $client;
 
@@ -30,7 +54,7 @@ class FedoraClient implements IFedoraClient {
      *
      * @return mixed    String or binary content if 200.  Null if 304.
      */
-    public function getResource($uri,
+    public function getResource($uri = "",
                                 $headers = [],
                                 $transaction = "") {
         // Set headers
@@ -56,6 +80,26 @@ class FedoraClient implements IFedoraClient {
     }
 
     /**
+     * Gets RDF metadata from Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param array     $headers        HTTP Headers
+     * @param string    $transaction    Transaction id
+     *
+     * @return EasyRdf_Graph
+     */
+    public function getGraph($uri = "",
+                             $headers = [],
+                             $transaction = "") {
+
+        $headers['Accept'] = 'application/ld+json';
+        $rdf = (string)$this->getResource($uri, $headers, $transaction);
+        $graph = new \EasyRdf_Graph();
+        $graph->parse($rdf, 'jsonld');
+        return $graph;
+    }
+
+    /**
      * Creates a new resource in Fedora.
      *
      * @param string    $uri            Resource URI
@@ -66,7 +110,7 @@ class FedoraClient implements IFedoraClient {
      *
      * @return string   Uri of newly created resource
      */
-    public function createResource($uri,
+    public function createResource($uri = "",
                                    $content = null,
                                    $headers = [],
                                    $transaction = "",
@@ -100,7 +144,7 @@ class FedoraClient implements IFedoraClient {
     }
 
     /**
-     * Upserts a resource in Fedora.
+     * Saves a resource in Fedora.
      *
      * @param string    $uri            Resource URI
      * @param string    $content        String or binary content
@@ -110,11 +154,11 @@ class FedoraClient implements IFedoraClient {
      *
      * @return null
      */
-    public function upsertResource($uri,
-                                   $content = null,
-                                   $headers = [],
-                                   $transaction = "",
-                                   $checksum = "") {
+    public function saveResource($uri,
+                                 $content = null,
+                                 $headers = [],
+                                 $transaction = "",
+                                 $checksum = "") {
         $options = [];
 
         // Set content.
@@ -138,6 +182,34 @@ class FedoraClient implements IFedoraClient {
         );
 
         return null;
+    }
+
+    /**
+     * Saves RDF in Fedora.
+     *
+     * @param string            $uri            Resource URI
+     * @param EasyRdf_Resource  $rdf            RDF to save
+     * @param string            $transaction    Transaction id
+     *
+     * @return null
+     */
+    public function saveGraph($uri,
+                              \EasyRdf_Graph $graph,
+                              $transaction = "") {
+        // Serialze the rdf.
+        $turtle = $graph->serialise('turtle');
+
+        // Checksum it.
+        $checksum = sha1($turtle);
+
+        // Save it.
+        return $this->saveResource(
+            $uri,
+            $turtle,
+            ['Content-Type' => 'text/turtle'],
+            $transaction,
+            $checksum
+        );
     }
 
     /**
@@ -300,16 +372,4 @@ class FedoraClient implements IFedoraClient {
         return $base . '/' . ltrim($id, '/');
     }
 
-    /**
-     * Retrieves an RDF Graph for the resource in Fedora.
-     *
-     * @param string    $uri    Fedora uri
-     *
-     * @return EasyRdf_Graph    The graph object for the resource in Fedora
-     */
-    //public function fetchGraph($uri) {
-        //return \EasyRdf_Graph::newAndLoad($uri);
-    //}
-
 }
-

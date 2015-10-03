@@ -4,12 +4,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Islandora\Churro\FedoraClient;
+use Islandora\Chullo\Chullo;
 
 class DeleteResourceTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @covers  Islandora\Fedora\FedoraClient::deleteResource
+     * @covers  Islandora\Fedora\Chullo::deleteResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsNullOn204() {
@@ -19,14 +19,14 @@ class DeleteResourceTest extends \PHPUnit_Framework_TestCase {
 
         $handler = HandlerStack::create($mock);
         $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new FedoraClient($guzzle);
+        $client = new Chullo($guzzle);
 
         $result = $client->deleteResource("");
         $this->assertNull($result);
     }
 
     /**
-     * @covers            Islandora\Fedora\FedoraClient::deleteResource
+     * @covers            Islandora\Fedora\Chullo::deleteResource
      * @uses              GuzzleHttp\Client
      * @expectedException GuzzleHttp\Exception\ClientException
      */
@@ -37,7 +37,7 @@ class DeleteResourceTest extends \PHPUnit_Framework_TestCase {
 
         $handler = HandlerStack::create($mock);
         $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new FedoraClient($guzzle);
+        $client = new Chullo($guzzle);
 
         $result = $client->deleteResource("");
     }

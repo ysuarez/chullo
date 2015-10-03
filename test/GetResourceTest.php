@@ -4,12 +4,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Islandora\Churro\FedoraClient;
+use Islandora\Chullo\Chullo;
 
 class GetResourceTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @covers  Islandora\Fedora\FedoraClient::getResource
+     * @covers  Islandora\Fedora\Chullo::getResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsContentOn200() {
@@ -19,14 +19,14 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase {
 
         $handler = HandlerStack::create($mock);
         $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new FedoraClient($guzzle);
+        $client = new Chullo($guzzle);
 
         $result = $client->getResource("");
         $this->assertSame((string)$result, "SOME CONTENT");
     }
 
     /**
-     * @covers  Islandora\Fedora\FedoraClient::getResource
+     * @covers  Islandora\Fedora\Chullo::getResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsNullOn304() {
@@ -36,14 +36,14 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase {
 
         $handler = HandlerStack::create($mock);
         $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new FedoraClient($guzzle);
+        $client = new Chullo($guzzle);
 
         $result = $client->getResource("");
         $this->assertNull($result);
     }
 
     /**
-     * @covers            Islandora\Fedora\FedoraClient::getResource
+     * @covers            Islandora\Fedora\Chullo::getResource
      * @uses              GuzzleHttp\Client
      * @expectedException GuzzleHttp\Exception\ClientException
      */
@@ -54,7 +54,7 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase {
 
         $handler = HandlerStack::create($mock);
         $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new FedoraClient($guzzle);
+        $client = new Chullo($guzzle);
 
         $result = $client->getResource("");
     }
