@@ -7,6 +7,7 @@ Chullo is a PHP client for Fedora 4 built using Guzzle and EasyRdf.
 ## Requirements
 
 * PHP 5.5+
+* [https://getcomposer.org/](Composer)
 
 ##Usage
 
