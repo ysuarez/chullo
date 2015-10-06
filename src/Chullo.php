@@ -307,7 +307,7 @@ class Chullo implements IFedoraClient {
             return $uri;
         }
 
-        return implode([$base_uri, $transaction_id, $relative_path], '/');
+        return implode([$base_uri, $transaction, $relative_path], '/');
     }
 
 
