@@ -9,9 +9,31 @@ Chullo is a PHP client for Fedora 4 built using Guzzle and EasyRdf.
 * PHP 5.5+
 * [https://getcomposer.org/](Composer)
 
+## Installation
+
+We’re currently working out getting onto [](Packagist).  Until then, you can still install it using composer by pointing to your local clone.  Just add these relevant bits to your `composer.json`:
+
+```
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "/path/to/chullo"
+        }
+    ],
+    "require": {
+        "islandora/chullo": "dev-master"
+    }
+}
+```
+
+Then just `php composer.phar install` as usual.
+
 ##Usage
 
 ```php
+use Islandora\Chullo\Chullo;
+
 // Instantiated with static factory
 $chullo = Chullo::create(“http://localhost:8080/fcrepo/rest”);
 
@@ -38,11 +60,13 @@ for ($i = 0; $i < 20; $i++) {
         <> dc:title "Child Resource $i"
 EOD;
 
+    // Using all possible arguments in createResource() this time
     $child_uri = $chullo->createResource(
         $uri,
         $rdf,
         ['Content-Type' => 'text/turtle'],
-        $transaction
+        $transaction,
+        sha1($rdf)
     );
 }
 
