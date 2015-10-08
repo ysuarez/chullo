@@ -11,7 +11,7 @@ Chullo is a PHP client for Fedora 4 built using Guzzle and EasyRdf.
 
 ## Installation
 
-We’re currently working out getting onto [](Packagist).  Until then, you can still install it using composer by pointing to your local clone.  Just add these relevant bits to your `composer.json`:
+We’re currently working out getting onto [https://packagist.org/](Packagist).  Until then, you can still install it using composer by pointing to your local clone.  Just add these relevant bits to your `composer.json`:
 
 ```
 {
