@@ -31,6 +31,7 @@ Then just `php composer.phar install` as usual.
 
 ##Usage
 
+###Fedora
 ```php
 use Islandora\Chullo\Chullo;
 
@@ -75,6 +76,29 @@ $chullo->commitTransaction($transaction);
 
 // Check it out:
 echo $uri . "\n";
+```
+
+### Triplestore
+
+```php
+use Islandora\Chullo\TriplestoreClient;
+
+$triplestore = TriplestoreClient::create('http://127.0.0.1:8080/bigdata/namespace/kb/sparql/');
+
+$sparql = <<<EOD
+    PREFIX fedora: <http://fedora.info/definitions/v4/repository#>
+
+    SELECT ?s
+    WHERE {
+        ?s fedora:hasParent <http://localhost:8080/fcrepo/rest/> .
+    }
+EOD;
+
+$results = $triplestore->query($sparql);
+
+foreach ($results as $triple) {
+    echo $triple->s . "\n";
+}
 ```
 
 ## Maintainers/Sponsors
