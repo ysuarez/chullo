@@ -92,6 +92,7 @@ $sparql = <<<EOD
     WHERE {
         ?s fedora:hasParent <http://localhost:8080/fcrepo/rest/> .
     }
+    LIMIT 25
 EOD;
 
 $results = $triplestore->query($sparql);
