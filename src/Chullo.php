@@ -310,6 +310,33 @@ class Chullo implements IFedoraClient {
         return implode([$base_uri, $transaction, $relative_path], '/');
     }
 
+    /**
+     * Issues a COPY request to Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param array     $destination    Destination URI
+     *
+     * @return string
+     */
+    public function copyResource($uri,
+                                 $destination) {
+        // Create destinsation URI  
+        $destination_uri = "Destination: " . $destination;                         
+        // Create destination array
+        $destination = array(
+          'Destination' => $destination_uri,
+          'Overwrite'   => 'T'
+        );
+        $response = $this->client->request(
+            'COPY',
+            $uri,
+            $destination
+        );
+
+        // Return the value of the location header
+        $locations = $response->getHeader('Location');
+        return reset($locations);
+    }
 
     /**
      * Creates a new transaction.

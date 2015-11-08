@@ -133,6 +133,16 @@ interface IFedoraClient
      */
     public function deleteResource($uri,
                                    $transaction = "");
+    /**
+     * Issues a COPY request to Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param array     $destination    Destination URI
+     *
+     * @return string   
+     */
+    public function copyResource($uri,
+                                 $destination);
 
     /**
      * Creates a new transaction.
