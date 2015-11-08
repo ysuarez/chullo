@@ -11,6 +11,7 @@
  * @category Islandora
  * @package  Islandora
  * @author   Daniel Lamb <daniel@discoverygarden.ca>
+ * @author   Nick Ruest <ruestn@gmail.com>
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GPL
  * @link     http://www.islandora.ca
  */
@@ -18,6 +19,7 @@
 namespace Islandora\Chullo;
 
 use GuzzleHttp\Client;
+use Guzzle\Http\Message\Response;
 
 /**
  * Default implementation of IFedoraClient using Guzzle.
@@ -57,7 +59,7 @@ class Chullo implements IFedoraClient {
      * @param array     $headers        HTTP Headers
      * @param string    $transaction    Transaction id
      *
-     * @return mixed    String or binary content if 200.  Null if 304.
+     * @return mixed    String or binary content if 200. Null if 304.
      */
     public function getResource($uri = "",
                                 $headers = [],
@@ -84,6 +86,31 @@ class Chullo implements IFedoraClient {
         return $response->getBody();
     }
 
+    /**
+     * Gets a Fedora resoure's headers.
+     *
+     * @param string    $uri            Resource URI
+     * @param string    $transaction    Transaction id
+     *
+     * @return array    Headers of a resource.
+     */
+    public function getResourceHeaders($uri = "",
+                                       $transaction = "") {
+
+        // Ensure uri takes transaction into account.
+        $uri = $this->prepareUri($uri, $transaction);
+
+        // Send the request.
+        $response = $this->client->request(
+            'GET',
+            $uri
+        );
+
+        $code = $response->getStatusCode();
+
+        return $response->getHeaders();
+    }
+    
     /**
      * Gets RDF metadata from Fedora.
      *
