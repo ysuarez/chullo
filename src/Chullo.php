@@ -19,7 +19,6 @@
 namespace Islandora\Chullo;
 
 use GuzzleHttp\Client;
-use Guzzle\Http\Message\Response;
 
 /**
  * Default implementation of IFedoraClient using Guzzle.
