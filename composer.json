@@ -15,6 +15,10 @@
         {
             "name": "Daniel Lamb",
             "email": "daniel@discoverygarden.ca"
+        },
+        {
+            "name": "Nick Ruest",
+            "email": "ruestn@gmail.com"
         }
     ],
     "autoload": {
