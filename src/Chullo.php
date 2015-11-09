@@ -109,6 +109,22 @@ class Chullo implements IFedoraClient {
     }
     
     /**
+     * Gets information about the supported HTTP methods, etc., for a Fedora resource.
+     *
+     * @param string    $uri            Resource URI
+     *
+     * @return string   Options of a resource.
+     */
+    public function getResourceOptions($uri = "") {
+        $response = $this->client->request(
+          'OPTIONS',
+          $uri
+        );
+        
+        return $response->getHeaders();
+    }
+
+    /**
      * Gets RDF metadata from Fedora.
      *
      * @param string    $uri            Resource URI

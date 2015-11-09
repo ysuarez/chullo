@@ -59,6 +59,15 @@ interface IFedoraClient
     public function getResourceHeaders($uri = "",
                                        $transaction = "");
     /**
+     * Gets information about the supported HTTP methods, etc., for a Fedora resource.
+     *
+     * @param string    $uri            Resource URI
+     *
+     * @return string   Options of a resource.
+     */
+    public function getResourceOptions($uri = "");
+
+    /**
      * Gets RDF metadata from Fedora.
      *
      * @param string    $uri            Resource URI
