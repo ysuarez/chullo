@@ -6,7 +6,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Islandora\Chullo\Chullo;
 
-class GetResourceHeadersTest extends \PHPUnit_Framework_TestCase {
+class GetResourceOptionsTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @covers  Islandora\Fedora\Chullo::getResourceOptions
