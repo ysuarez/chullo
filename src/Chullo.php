@@ -105,8 +105,6 @@ class Chullo implements IFedoraClient {
             $uri
         );
 
-        $code = $response->getStatusCode();
-
         return $response->getHeaders();
     }
     
