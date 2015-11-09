@@ -101,7 +101,7 @@ class Chullo implements IFedoraClient {
 
         // Send the request.
         $response = $this->client->request(
-            'GET',
+            'HEAD',
             $uri
         );
 
