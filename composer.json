@@ -13,6 +13,10 @@
     "license": "GPLv3",
     "authors": [
         {
+            "name": "Islandora Foundation",
+            "email": "community@islandora.ca"
+        },
+        {
             "name": "Daniel Lamb",
             "email": "daniel@discoverygarden.ca"
         },
