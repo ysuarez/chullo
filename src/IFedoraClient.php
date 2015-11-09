@@ -138,11 +138,13 @@ interface IFedoraClient
      *
      * @param string    $uri            Resource URI
      * @param array     $destination    Destination URI
+     * @param string    $transaction    Transaction id
      *
      * @return string
      */
     public function moveResource($uri,
-                                 $destination);
+                                 $destination,
+                                 $transaction = "");
 
     /**
      * Creates a new transaction.

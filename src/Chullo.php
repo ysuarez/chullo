@@ -315,11 +315,15 @@ class Chullo implements IFedoraClient {
      *
      * @param string    $uri            Resource URI
      * @param array     $destination    Destination URI
+     * @param string    $transaction    Transaction id
      *
      * @return string
      */
     public function moveResource($uri,
-                                 $destination) {
+                                 $destination,
+                                 $transaction = "") {
+        // Ensure uri takes transaction into account.
+        $uri = $this->prepareUri($uri, $transaction);
         // Create destinsation URI
         $destination_uri = "Destination: " . $destination;
         // Create destination array
