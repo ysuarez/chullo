@@ -1,4 +1,4 @@
-#Chullo [![Build Status](https://travis-ci.org/Islandora-Labs/chullo.svg?branch=master)](https://travis-ci.org/Islandora-Labs/chullo)
+#Chullo [![Build Status](https://travis-ci.org/Islandora-CLAW/chullo.svg?branch=master)](https://travis-ci.org/Islandora-CLAW/chullo)
 
 ## Introduction
 
