@@ -17,6 +17,24 @@ Chullo is a PHP client for Fedora 4 built using Guzzle and EasyRdf.
 2. `cd chullo`
 3. `php composer.phar install`
 
+You can also install with composer by pointing to your local clone. Just add these relevant bits to your `composer.json`:
+
+```
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "/path/to/chullo"
+        }
+    ],
+    "require": {
+        "islandora/chullo": "dev-master"
+    }
+}
+```
+
+Then just `php composer.phar install` as usual.
+
 ##Usage
 
 ###Fedora
