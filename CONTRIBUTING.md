@@ -61,7 +61,7 @@ need to:
 
 1. [Fork](https://help.github.com/articles/fork-a-repo) the Islandora GitHub repository at [https://github.com/Islandora-CLAW/chullo](https://github.com/Islandora-CLAW/chullo) to your personal GitHub account.  See [Fork a repo](https://help.github.com/articles/fork-a-repo) for detailed instructions.
 2. Commit any changes to your fork.
-3. Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to the Islandora GitHub repository that you forked in step 1.  If your pull request is related to an existing issue -- for instance, because you reported a [bug/issue](https://github.com/Islandora-CLAW/Chullo/issues) earlier -- then please include a reference to the issue in the description of the pull. This can be done by using '#' plus the issue number like so '#123', also try to pick and appropriate name for the branch in which your issuing the pull request from. 
+3. Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to the Islandora GitHub repository that you forked in step 1.  If your pull request is related to an existing issue -- for instance, because you reported a [bug/issue](https://github.com/Islandora-CLAW/Chullo/issues) earlier -- prefix the title of your pull request with the corresponding issue number (e.g. `issue-123: ...`). Please also include a reference to the issue in the description of the pull. This can be done by using '#' plus the issue number like so '#123', also try to pick an appropriate name for the branch in which you're issuing the pull request from. 
 
 You may want to read [Syncing a fork](https://help.github.com/articles/syncing-a-fork) for instructions on how to keep your fork up to date with the latest changes of the upstream (official) `islandora` repository.
 
