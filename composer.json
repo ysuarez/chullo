@@ -1,6 +1,12 @@
 {
     "name": "islandora/chullo",
     "description": "A PHP client for interacting with a Fedora 4 server.",
+    "type": "library",
+    "homepage": "https://github.com/islandora-claw/chullo",
+    "support": {
+        "issues": "https://github.com/islandora-claw/chullo/issues",
+        "irc": "irc://irc.freenode.net/islandora"
+    },
     "require": {
         "php": ">=5.5.0",
         "guzzlehttp/guzzle": "6.1.0",
@@ -14,15 +20,19 @@
     "authors": [
         {
             "name": "Islandora Foundation",
-            "email": "community@islandora.ca"
+            "email": "community@islandora.ca",
+            "role": "Owner"
+
         },
         {
             "name": "Daniel Lamb",
-            "email": "daniel@discoverygarden.ca"
+            "email": "daniel@discoverygarden.ca",
+            "role": "Maintainer"
         },
         {
             "name": "Nick Ruest",
-            "email": "ruestn@gmail.com"
+            "email": "ruestn@gmail.com",
+            "role": "Maintainer"
         }
     ],
     "autoload": {
