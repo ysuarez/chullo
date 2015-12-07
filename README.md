@@ -1,8 +1,10 @@
-#Chullo [![Build Status](https://travis-ci.org/Islandora-Labs/chullo.svg?branch=master)](https://travis-ci.org/Islandora-Labs/chullo)
-
-## Introduction
+#Chullo 
 
 Chullo is a PHP client for Fedora 4 built using Guzzle and EasyRdf.
+
+[![Latest Stable Version](https://img.shields.io/packagist/v/islandora/chullo.svg?style=flat-square)](https://packagist.org/packages/islandora/chullo)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.5-8892BF.svg?style=flat-square)](https://php.net/)
+[![Build Status](https://travis-ci.org/Islandora-CLAW/chullo.svg?branch=master)](https://travis-ci.org/Islandora-CLAW/chullo)
 
 ## Requirements
 
@@ -11,7 +13,11 @@ Chullo is a PHP client for Fedora 4 built using Guzzle and EasyRdf.
 
 ## Installation
 
-We’re currently working out getting onto [Packagist](https://packagist.org/).  Until then, you can still install it using composer by pointing to your local clone.  Just add these relevant bits to your `composer.json`:
+1. `git clone git@github.com:Islandora-CLAW/chullo.git`
+2. `cd chullo`
+3. `php composer.phar install`
+
+You can also install with composer by pointing to your local clone. Just add these relevant bits to your `composer.json`:
 
 ```
 {
@@ -107,6 +113,7 @@ foreach ($results as $triple) {
 Current maintainers:
 
 * [Daniel Lamb](https://github.com/daniel-dgi)
+* [Nick Ruest](https://github.com/ruebot)
 
 ## Development
 
