@@ -349,8 +349,6 @@ class Chullo implements IFedoraClient {
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
         // Create destinsation URI  
-        $destination_uri = $this->prepareUri($destination, $transaction);                         
-        // Create destinsation URI
         $destination_uri = $this->prepareUri($destination, $transaction);
         // Create destination array
         $options = [
@@ -360,9 +358,9 @@ class Chullo implements IFedoraClient {
             ],
         ];
         $response = $this->client->request(
-            'COPY',
-            $uri,
-            $options
+          'COPY',
+          $uri,
+          $options
         );
 
         // Return the value of the location header
@@ -385,8 +383,6 @@ class Chullo implements IFedoraClient {
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
         // Create destinsation URI  
-        $destination_uri = $this->prepareUri($destination, $transaction);                         
-        // Create destinsation URI
         $destination_uri = $this->prepareUri($destination, $transaction);
         // Create destination array
         $options = [
@@ -396,9 +392,9 @@ class Chullo implements IFedoraClient {
             ],
         ];
         $response = $this->client->request(
-            'MOVE',
-            $uri,
-            $options
+          'MOVE',
+          $uri,
+          $options
         );
 
         // Return the value of the location header

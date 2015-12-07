@@ -150,7 +150,7 @@ interface IFedoraClient
      * @param array     $destination    Destination URI
      * @param string    $transaction    Transaction id
      *
-     * @return string   
+     * @return string
      */
     public function copyResource($uri,
                                  $destination,
@@ -162,7 +162,7 @@ interface IFedoraClient
      * @param array     $destination    Destination URI
      * @param string    $transaction    Transaction id
      *
-     * @return string   
+     * @return string 
      */
     public function moveResource($uri,
                                  $destination,
