@@ -143,6 +143,18 @@ interface IFedoraClient
      */
     public function deleteResource($uri,
                                    $transaction = "");
+    /**
+     * Issues a MOVE request to Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param array     $destination    Destination URI
+     * @param string    $transaction    Transaction id
+     *
+     * @return string
+     */
+    public function moveResource($uri,
+                                 $destination,
+                                 $transaction = "");
 
     /**
      * Creates a new transaction.
