@@ -382,7 +382,7 @@ class Chullo implements IFedoraClient {
                                  $transaction = "") {
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
-        // Create destinsation URI  
+        // Create destinsation URI
         $destination_uri = $this->prepareUri($destination, $transaction);
         // Create destination array
         $options = [
