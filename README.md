@@ -2,7 +2,7 @@
 
 Chullo is a PHP client for Fedora 4 built using Guzzle and EasyRdf.
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/islandora/chullo.svg?style=flat-square)](https://packagist.org/packages/islandora/chullo)
+[![Latest Stable Version](https://img.shields.io/packagist/v/Islandora/chullo.svg?style=flat-square)](https://packagist.org/packages/islandora/chullo)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.5-8892BF.svg?style=flat-square)](https://php.net/)
 [![Build Status](https://travis-ci.org/Islandora-CLAW/chullo.svg?branch=master)](https://travis-ci.org/Islandora-CLAW/chullo)
 
