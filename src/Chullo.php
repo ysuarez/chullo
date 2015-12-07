@@ -325,16 +325,18 @@ class Chullo implements IFedoraClient {
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
         // Create destinsation URI
-        $destination_uri = "Destination: " . $this->prepareUri($destination, $transaction);
+        $destination_uri = $this->prepareUri($destination, $transaction);
         // Create destination array
-        $destination = array(
-          'Destination' => $destination_uri,
-          'Overwrite'   => 'T'
-        );
+        $options = [
+          'header' => [
+            'Destination' => $destination_uri,
+            'Overwrite'   => 'T'
+            ],
+        ];
         $response = $this->client->request(
           'MOVE',
           $uri,
-          $destination
+          $options
         );
 
         // Return the value of the location header
