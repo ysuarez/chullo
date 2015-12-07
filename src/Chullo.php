@@ -328,7 +328,7 @@ class Chullo implements IFedoraClient {
         $destination_uri = $this->prepareUri($destination, $transaction);
         // Create destination array
         $options = [
-          'header' => [
+          'headers' => [
             'Destination' => $destination_uri,
             'Overwrite'   => 'T'
             ],
