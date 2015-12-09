@@ -19,9 +19,10 @@
 namespace Islandora\Chullo;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 /**
- * Default implementation of IFedoraClient using Guzzle.
+ * Default implementation of IFedoraApi using Guzzle.
  *
  * @category Islandora
  * @package  Islandora
@@ -29,15 +30,17 @@ use GuzzleHttp\Client;
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GPL
  * @link     http://www.islandora.ca
  */
-class Chullo implements IFedoraClient {
+class FedoraApi implements IFedoraApi {
+
+    protected $client;
 
     public function __construct(Client $client) {
-        parent::__construct($client);
+        $this->client = $client;
     }
 
     static public function create($fedora_rest_url) {
         $guzzle = new Client(['base_uri' => $fedora_rest_url]);
-        return new Chullo($guzzle);
+        return new FedoraApi($guzzle);
     }
 
     /**
@@ -56,7 +59,7 @@ class Chullo implements IFedoraClient {
      * @param array     $headers        HTTP Headers
      * @param string    $transaction    Transaction id
      *
-     * @return mixed    String or binary content if 200. Null if 304.
+     * @return ResponseInterface
      */
     public function getResource($uri = "",
                                 $headers = [],
@@ -68,19 +71,11 @@ class Chullo implements IFedoraClient {
         $uri = $this->prepareUri($uri, $transaction);
 
         // Send the request.
-        $response = $this->client->request(
+        return $this->client->request(
             'GET',
             $uri,
             $options
         );
-
-        $code = $response->getStatusCode();
-
-        if ($code == 304) {
-            return null;
-        }
-
-        return $response->getBody();
     }
 
     /**
@@ -89,7 +84,7 @@ class Chullo implements IFedoraClient {
      * @param string    $uri            Resource URI
      * @param string    $transaction    Transaction id
      *
-     * @return array    Headers of a resource.
+     * @return ResponseInterface
      */
     public function getResourceHeaders($uri = "",
                                        $transaction = "") {
@@ -98,12 +93,10 @@ class Chullo implements IFedoraClient {
         $uri = $this->prepareUri($uri, $transaction);
 
         // Send the request.
-        $response = $this->client->request(
+        return $this->client->request(
             'HEAD',
             $uri
         );
-
-        return $response->getHeaders();
     }
 
     /**
@@ -111,40 +104,13 @@ class Chullo implements IFedoraClient {
      *
      * @param string    $uri            Resource URI
      *
-     * @return string   Options of a resource.
+     * @return ResponseInterface
      */
     public function getResourceOptions($uri = "") {
-        $response = $this->client->request(
+        return $this->client->request(
           'OPTIONS',
           $uri
         );
-
-        return $response->getHeaders();
-    }
-
-    /**
-     * Gets RDF metadata from Fedora.
-     *
-     * @param string    $uri            Resource URI
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     *
-     * @return EasyRdf_Graph
-     */
-    public function getGraph($uri = "",
-                             $headers = [],
-                             $transaction = "") {
-
-        $headers['Accept'] = 'application/ld+json';
-        $rdf = (string)$this->getResource($uri, $headers, $transaction);
-
-        if (empty($rdf)) {
-            return null;
-        }
-
-        $graph = new \EasyRdf_Graph();
-        $graph->parse($rdf, 'jsonld');
-        return $graph;
     }
 
     /**
@@ -156,7 +122,7 @@ class Chullo implements IFedoraClient {
      * @param string    $transaction    Transaction id
      * @param string    $checksum       SHA-1 checksum
      *
-     * @return string   Uri of newly created resource
+     * @return ResponseInterface
      */
     public function createResource($uri = "",
                                    $content = null,
@@ -180,15 +146,11 @@ class Chullo implements IFedoraClient {
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
 
-        $response = $this->client->request(
+        return $this->client->request(
             'POST',
             $uri,
             $options
         );
-
-        // Return the value of the location header
-        $locations = $response->getHeader('Location');
-        return reset($locations);
     }
 
     /**
@@ -200,7 +162,7 @@ class Chullo implements IFedoraClient {
      * @param string    $transaction    Transaction id
      * @param string    $checksum       SHA-1 checksum
      *
-     * @return null
+     * @return ResponseInterface
      */
     public function saveResource($uri,
                                  $content = null,
@@ -223,40 +185,10 @@ class Chullo implements IFedoraClient {
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
 
-        $response = $this->client->request(
+        return $this->client->request(
             'PUT',
             $uri,
             $options
-        );
-
-        return null;
-    }
-
-    /**
-     * Saves RDF in Fedora.
-     *
-     * @param string            $uri            Resource URI
-     * @param EasyRdf_Resource  $graph          Graph to save
-     * @param string            $transaction    Transaction id
-     *
-     * @return null
-     */
-    public function saveGraph($uri,
-                              \EasyRdf_Graph $graph,
-                              $transaction = "") {
-        // Serialze the rdf.
-        $turtle = $graph->serialise('turtle');
-
-        // Checksum it.
-        $checksum = sha1($turtle);
-
-        // Save it.
-        return $this->saveResource(
-            $uri,
-            $turtle,
-            ['Content-Type' => 'text/turtle'],
-            $transaction,
-            $checksum
         );
     }
 
@@ -268,7 +200,7 @@ class Chullo implements IFedoraClient {
      * @param array     $headers        HTTP Headers
      * @param string    $transaction    Transaction id
      *
-     * @return null
+     * @return ResponseInterface
      */
     public function modifyResource($uri,
                                    $sparql = "",
@@ -286,13 +218,11 @@ class Chullo implements IFedoraClient {
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
 
-        $response = $this->client->request(
+        return $this->client->request(
             'PATCH',
             $uri,
             $options
         );
-
-        return null;
     }
 
     /**
@@ -301,19 +231,17 @@ class Chullo implements IFedoraClient {
      * @param string    $uri            Resource URI
      * @param string    $transaction    Transaction id
      *
-     * @return null
+     * @return ResponseInterface
      */
     public function deleteResource($uri,
                                    $transaction = "") {
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
 
-        $this->client->request(
+        return $this->client->request(
             'DELETE',
             $uri
         );
-
-        return null;
     }
 
     protected function prepareUri($uri, $transaction = "") {
@@ -355,7 +283,7 @@ class Chullo implements IFedoraClient {
      * @param array     $destination    Destination URI
      * @param string    $transaction    Transaction id
      *
-     * @return string
+     * @return ResponseInterface
      */
     public function copyResource($uri,
                                  $destination,
@@ -371,15 +299,11 @@ class Chullo implements IFedoraClient {
             'Overwrite'   => 'T'
             ],
         ];
-        $response = $this->client->request(
+        return $this->client->request(
           'COPY',
           $uri,
           $options
         );
-
-        // Return the value of the location header
-        $locations = $response->getHeader('Location');
-        return reset($locations);
     }
 
     /**
@@ -389,7 +313,7 @@ class Chullo implements IFedoraClient {
      * @param array     $destination    Destination URI
      * @param string    $transaction    Transaction id
      *
-     * @return string
+     * @return ResponseInterface
      */
     public function moveResource($uri,
                                  $destination,
@@ -405,30 +329,21 @@ class Chullo implements IFedoraClient {
             'Overwrite'   => 'T'
             ],
         ];
-        $response = $this->client->request(
+        return $this->client->request(
           'MOVE',
           $uri,
           $options
         );
-
-        // Return the value of the location header
-        $locations = $response->getHeader('Location');
-        return reset($locations);
     }
 
     /**
      * Creates a new transaction.
      *
-     * @return string   Transaction id
+     * @return ResponseInterface
      */
     public function createTransaction() {
         // Create the transaction.
-        $uri = $this->createResource("fcr:tx");
-
-        // Hack the tx id out of the response uri.
-        $trimmed = rtrim($uri, '/');
-        $exploded = explode('/', $trimmed);
-        return array_pop($exploded);
+        return $this->createResource("fcr:tx");
     }
 
     /**
@@ -436,16 +351,14 @@ class Chullo implements IFedoraClient {
      *
      * @param string    $id Transaction id
      *
-     * @return string   Fedora response
+     * @return ResponseInterface
      */
     public function extendTransaction($id) {
         $uri = $this->generateTransactionUri($id);
-        $this->client->request(
+        return $this->client->request(
             'POST',
             $uri
         );
-
-        return null;
     }
 
     /**
@@ -453,16 +366,14 @@ class Chullo implements IFedoraClient {
      *
      * @param string    $id Transaction id
      *
-     * @return boolean
+     * @return ResponseInterface
      */
     public function commitTransaction($id) {
         $uri = $this->generateTransactionUri($id) . '/fcr:tx/fcr:commit';
-        $this->client->request(
+        return $this->client->request(
             'POST',
             $uri
         );
-
-        return null;
     }
 
     /**
@@ -470,16 +381,14 @@ class Chullo implements IFedoraClient {
      *
      * @param string    $id Transaction id
      *
-     * @return boolean
+     * @return ResponseInterface
      */
     public function rollbackTransaction($id) {
         $uri = $this->generateTransactionUri($id) . '/fcr:tx/fcr:rollback';
-        $this->client->request(
+        return $this->client->request(
             'POST',
             $uri
         );
-
-        return null;
     }
 
     protected function generateTransactionUri($id) {
