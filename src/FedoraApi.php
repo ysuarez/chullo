@@ -20,6 +20,8 @@ namespace Islandora\Chullo;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Default implementation of IFedoraApi using Guzzle.
@@ -65,7 +67,7 @@ class FedoraApi implements IFedoraApi {
                                 $headers = [],
                                 $transaction = "") {
         // Set headers
-        $options = ['headers' => $headers];
+        $options = ['http_errors' => false, 'headers' => $headers];
 
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
@@ -95,7 +97,8 @@ class FedoraApi implements IFedoraApi {
         // Send the request.
         return $this->client->request(
             'HEAD',
-            $uri
+            $uri,
+            ['http_errors' => false]
         );
     }
 
@@ -108,8 +111,9 @@ class FedoraApi implements IFedoraApi {
      */
     public function getResourceOptions($uri = "") {
         return $this->client->request(
-          'OPTIONS',
-          $uri
+            'OPTIONS',
+            $uri,
+            ['http_errors' => false]
         );
     }
 
@@ -130,7 +134,7 @@ class FedoraApi implements IFedoraApi {
                                    $transaction = "",
                                    $checksum = "") {
 
-        $options = [];
+        $options = ['http_errors' => false];
 
         // Set content.
         $options['body'] = $content;
@@ -169,7 +173,7 @@ class FedoraApi implements IFedoraApi {
                                  $headers = [],
                                  $transaction = "",
                                  $checksum = "") {
-        $options = [];
+        $options = ['http_errors' => false];
 
         // Set content.
         $options['body'] = $content;
@@ -206,7 +210,7 @@ class FedoraApi implements IFedoraApi {
                                    $sparql = "",
                                    $headers = [],
                                    $transaction = "") {
-        $options = [];
+        $options = ['http_errors' => false];
 
         // Set content.
         $options['body'] = $sparql;
@@ -235,12 +239,16 @@ class FedoraApi implements IFedoraApi {
      */
     public function deleteResource($uri,
                                    $transaction = "") {
+
+        $options = ['http_errors' => false];
+
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
 
         return $this->client->request(
             'DELETE',
-            $uri
+            $uri,
+            $options
         );
     }
 
@@ -294,6 +302,7 @@ class FedoraApi implements IFedoraApi {
         $destination_uri = $this->prepareUri($destination, $transaction);
         // Create destination array
         $options = [
+          'http_errors' => false,
           'headers' => [
             'Destination' => $destination_uri,
             'Overwrite'   => 'T'
@@ -324,6 +333,7 @@ class FedoraApi implements IFedoraApi {
         $destination_uri = $this->prepareUri($destination, $transaction);
         // Create destination array
         $options = [
+          'http_errors' => false,
           'headers' => [
             'Destination' => $destination_uri,
             'Overwrite'   => 'T'
@@ -354,10 +364,12 @@ class FedoraApi implements IFedoraApi {
      * @return ResponseInterface
      */
     public function extendTransaction($id) {
+        $options = ['http_errors' => false];
         $uri = $this->generateTransactionUri($id);
         return $this->client->request(
             'POST',
-            $uri
+            $uri,
+            $options
         );
     }
 
@@ -369,10 +381,12 @@ class FedoraApi implements IFedoraApi {
      * @return ResponseInterface
      */
     public function commitTransaction($id) {
+        $options = ['http_errors' => false];
         $uri = $this->generateTransactionUri($id) . '/fcr:tx/fcr:commit';
         return $this->client->request(
             'POST',
-            $uri
+            $uri,
+            $options
         );
     }
 
@@ -384,10 +398,12 @@ class FedoraApi implements IFedoraApi {
      * @return ResponseInterface
      */
     public function rollbackTransaction($id) {
+        $options = ['http_errors' => false];
         $uri = $this->generateTransactionUri($id) . '/fcr:tx/fcr:rollback';
         return $this->client->request(
             'POST',
-            $uri
+            $uri,
+            $options
         );
     }
 

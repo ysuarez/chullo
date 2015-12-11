@@ -12,50 +12,41 @@ class SaveResourceTest extends \PHPUnit_Framework_TestCase {
      * @covers  Islandora\Fedora\Chullo::saveResource
      * @uses    GuzzleHttp\Client
      */
-    public function testReturnsNullOn204() {
+    public function testReturnsTrueOn204() {
         $mock = new MockHandler([
             new Response(204),
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
+        $guzzle = new Client(['handler' => $handler]);
+        $api = new FedoraApi($guzzle);
+        $client = new Chullo($api);
 
-        $result = $client->saveResource("", "SOME CONTENT", ['Content-Type' => "text/plain"]);
-        $this->assertNull($result);
+        $result = $client->saveResource("");
+        $this->assertTrue($result);
     }
 
     /**
      * @covers            Islandora\Fedora\Chullo::saveResource
      * @uses              GuzzleHttp\Client
-     * @expectedException GuzzleHttp\Exception\ClientException
      */
-    public function testThrowsExceptionOn412() {
+    public function testReturnsFalseOtherwise() {
         $mock = new MockHandler([
+            new Response(409),
             new Response(412),
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
+        $guzzle = new Client(['handler' => $handler]);
+        $api = new FedoraApi($guzzle);
+        $client = new Chullo($api);
 
-        $result = $client->saveResource("", "SOME CONTENT", ['Content-Type' => "text/plain"]);
-    }
+        // 409
+        $result = $client->createResource("");
+        $this->assertNull($result);
 
-    /**
-     * @covers            Islandora\Fedora\Chullo::saveResource
-     * @uses              GuzzleHttp\Client
-     * @expectedException GuzzleHttp\Exception\ClientException
-     */
-    public function testThrowsExceptionOn409() {
-        $mock = new MockHandler([
-            new Response(409),
-        ]);
-
-        $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
-
+        // 412
         $result = $client->saveResource("");
+        $this->assertFalse($result);
     }
 }
