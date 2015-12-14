@@ -69,7 +69,7 @@ class Chullo implements IFedoraClient {
             $transaction
         );
         if ($response->getStatusCode() != 200) {
-            return null;
+            return $response;
         }
 
 //        return $response->getBody();
