@@ -34,12 +34,12 @@ class Chullo implements IFedoraClient {
     protected $api; // IFedoraApi
 
     public function __construct(IFedoraApi $api) {
-        $this->api = api;
+        $this->api = $api;
     }
 
     static public function create($fedora_rest_url) {
         $api = FedoraApi::create($fedora_rest_url);
-        return new Chullo($api);
+        return new static($api);
     }
 
     /**
@@ -63,17 +63,17 @@ class Chullo implements IFedoraClient {
     public function getResource($uri = "",
                                 $headers = [],
                                 $transaction = "") {
-        $response = $this->api>getResource(
+        $response = $this->api->getResource(
             $uri,
             $headers,
             $transaction
         );
-
         if ($response->getStatusCode() != 200) {
             return null;
         }
 
-        return $response->getBody();
+//        return $response->getBody();
+        return $response;
     }
 
     /**

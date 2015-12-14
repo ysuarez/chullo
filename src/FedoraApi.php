@@ -42,7 +42,7 @@ class FedoraApi implements IFedoraApi {
 
     static public function create($fedora_rest_url) {
         $guzzle = new Client(['base_uri' => $fedora_rest_url]);
-        return new FedoraApi($guzzle);
+        return new static($guzzle);
     }
 
     /**
