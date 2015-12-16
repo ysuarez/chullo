@@ -62,7 +62,7 @@ class Chullo implements IFedoraClient
      * @param array     $headers        HTTP Headers
      * @param string    $transaction    Transaction id
      *
-     * @return mixed    String or binary content if found.  Null otherwise.
+     * @return mixed    Full response if found.  Null otherwise.
      */
     public function getResource(
         $uri = "",
