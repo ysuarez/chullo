@@ -27,7 +27,7 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase
 
         $result = $client->getResource("");
         $this->assertSame((string)$result->getBody(), "SOME CONTENT");
-        $this->assertSame($result->getHeaders(), ['X-FOO' => 'Fedora4']);
+        $this->assertSame($result->getHeader('X-FOO'), ['Fedora4']);
     }
 
     /**
