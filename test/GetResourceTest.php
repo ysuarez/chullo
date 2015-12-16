@@ -17,7 +17,7 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase
     public function testReturnsContentOn200()
     {
         $mock = new MockHandler([
-            new Response(200, [], "SOME CONTENT"),
+            new Response(200, ['X-FOO' => 'Fedora4'], "SOME CONTENT"),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -26,7 +26,8 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase
         $client = new Chullo($api);
 
         $result = $client->getResource("");
-        $this->assertSame($result, $mock);
+        $this->assertSame((string)$result->getBody(), "SOME CONTENT"));
+        $this->assertSame((string)$result->getHeaders(), ['X-FOO' => 'Fedora4']));
     }
 
     /**
