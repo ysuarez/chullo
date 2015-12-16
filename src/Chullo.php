@@ -137,8 +137,8 @@ class Chullo implements IFedoraClient
     ) {
 
         $headers['Accept'] = 'application/ld+json';
-        $rdf = (string)$this->getResource($uri, $headers, $transaction);
-
+        $response = $this->getResource($uri, $headers, $transaction);
+        $rdf = (string)$response->getBody();
         if (empty($rdf)) {
             return null;
         }
