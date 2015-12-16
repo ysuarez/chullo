@@ -5,14 +5,17 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Islandora\Chullo\Chullo;
+use Islandora\Chullo\FedoraApi;
 
-class GetResourceTest extends \PHPUnit_Framework_TestCase {
+class GetResourceTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @covers  Islandora\Fedora\Chullo::getResource
      * @uses    GuzzleHttp\Client
      */
-    public function testReturnsContentOn200() {
+    public function testReturnsContentOn200()
+    {
         $mock = new MockHandler([
             new Response(200, [], "SOME CONTENT"),
         ]);
@@ -30,7 +33,8 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase {
      * @covers  Islandora\Fedora\Chullo::getResource
      * @uses    GuzzleHttp\Client
      */
-    public function testReturnsNullOtherwise() {
+    public function testReturnsNullOtherwise()
+    {
         $mock = new MockHandler([
             new Response(304),
             new Response(404),
@@ -41,12 +45,9 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase {
         $api = new FedoraApi($guzzle);
         $client = new Chullo($api);
 
-        // 304
-        $result = $client->getResource("");
-        $this->assertNull($result);
-
-        // 404
-        $result = $client->getResource("");
-        $this->assertNull($result);
+        foreach ($mock as $response) {
+            $result = $client->getResource("");
+            $this->assertFalse($result);
+        }
     }
 }

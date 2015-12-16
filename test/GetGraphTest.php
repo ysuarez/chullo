@@ -5,14 +5,17 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Islandora\Chullo\Chullo;
+use Islandora\Chullo\FedoraApi;
 
-class GetGraphTest extends \PHPUnit_Framework_TestCase {
+class GetGraphTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @covers  Islandora\Fedora\Chullo::getGraph
      * @uses    GuzzleHttp\Client
      */
-    public function testReturnsContentOn200() {
+    public function testReturnsContentOn200()
+    {
         $fixture = <<<EOD
             [ {
               "@id" : "http://127.0.0.1:8080/fcrepo/rest/4d/8b/2d/8e/4d8b2d8e-d063-4c9f-aac9-6b285b193ed6",
@@ -64,8 +67,9 @@ EOD;
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
+        $guzzle = new Client(['handler' => $handler]);
+        $api = new FedoraApi($guzzle);
+        $client = new Chullo($api);
 
         $graph = $client->getGraph();
         $title = (string)$graph->get(
@@ -79,34 +83,21 @@ EOD;
      * @covers  Islandora\Fedora\Chullo::getGraph
      * @uses    GuzzleHttp\Client
      */
-    public function testReturnsNullOn304() {
+    public function testReturnsNullOtherwise()
+    {
         $mock = new MockHandler([
             new Response(304),
-        ]);
-
-        $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
-
-        $result = $client->getGraph();
-        $this->assertNull($result);
-    }
-
-    /**
-     * @covers            Islandora\Fedora\Chullo::getGraph
-     * @uses              GuzzleHttp\Client
-     * @expectedException GuzzleHttp\Exception\ClientException
-     */
-    public function testThrowsExceptionOn404() {
-        $mock = new MockHandler([
             new Response(404),
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
+        $guzzle = new Client(['handler' => $handler]);
+        $api = new FedoraApi($guzzle);
+        $client = new Chullo($api);
 
-        $result = $client->getGraph();
+        foreach ($mock as $response) {
+            $result = $client->getGraph("");
+            $this->assertNull($result);
+        }
     }
 }
-
