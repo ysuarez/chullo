@@ -26,8 +26,8 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase
         $client = new Chullo($api);
 
         $result = $client->getResource("");
-        $this->assertSame((string)$result->getBody(), "SOME CONTENT"));
-        $this->assertSame((string)$result->getHeaders(), ['X-FOO' => 'Fedora4']));
+        $this->assertSame((string)$result->getBody(), "SOME CONTENT");
+        $this->assertSame((string)$result->getHeaders(), ['X-FOO' => 'Fedora4']);
     }
 
     /**
