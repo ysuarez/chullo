@@ -231,11 +231,10 @@ class FedoraApi implements IFedoraApi
 
         // Set headers.
         $options['headers'] = $headers;
-        $options['headers']['Content-Type'] = 'application/sparql-update';
+        $options['headers']['content-type'] = 'application/sparql-update';
 
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
-
         return $this->client->request(
             'PATCH',
             $uri,
