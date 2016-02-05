@@ -387,7 +387,7 @@ class FedoraApi implements IFedoraApi
     public function extendTransaction($id)
     {
         $options = ['http_errors' => false];
-        $uri = $this->generateTransactionUri($id);
+        $uri = $this->generateTransactionUri($id) . '/fcr:tx';
         return $this->client->request(
             'POST',
             $uri,
