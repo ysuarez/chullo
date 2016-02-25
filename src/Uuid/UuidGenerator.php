@@ -33,12 +33,12 @@ class UuidGenerator implements IUuidGenerator
      *
      * @return String   Valid v5 UUID.
      */
-    public function generateV5($str, $namespace = NULL) {
+    public function generateV5($namespace = NULL) {
         // Use default namespace if none is provided.
         if (empty($namespace)) {
             $namespace = $this->namespace;
         }
 
-        return Uuid::uuid5($namespace, $str)->toString();
+        return Uuid::uuid5(Uuid::NAMESPACE_DNS, $namespace)->toString();
     }
 }

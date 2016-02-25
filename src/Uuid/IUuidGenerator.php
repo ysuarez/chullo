@@ -40,5 +40,5 @@ interface IUuidGenerator {
      *
      * @return String   Valid v5 UUID.
      */
-    public function generateV5($name, $namespace = NULL);
+    public function generateV5($namespace = NULL);
 }
