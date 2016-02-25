@@ -10,6 +10,7 @@ use Ramsey\Uuid\Uuid;
 class UuidGenerator implements IUuidGenerator
 {
     protected $namespace;
+    protected $namespace_uuid;
 
     public function __construct($namespace = NULL) {
         // Give sensible default namespace if none is provided.
@@ -17,6 +18,7 @@ class UuidGenerator implements IUuidGenerator
             $namespace = "islandora.ca";
         }
         $this->namespace = $namespace;
+        $this->namespace_uuid = Uuid::uuid(Uuid::NAMESPACE_DNS, $namespace);
     }
 
     /**
@@ -33,12 +35,14 @@ class UuidGenerator implements IUuidGenerator
      *
      * @return String   Valid v5 UUID.
      */
-    public function generateV5($namespace = NULL) {
+    public function generateV5($str, $namespace = NULL) {
         // Use default namespace if none is provided.
-        if (empty($namespace)) {
-            $namespace = $this->namespace;
+        if (!empty($namespace)) {
+          return Uuid::uuid5(Uuid::uuid5(Uuid::NAMESPACE_DNS, $namespace), $str)->toString();
         }
-
-        return Uuid::uuid5(Uuid::NAMESPACE_DNS, $namespace)->toString();
+        else {
+          return Uuid::uuid5($namespace_uuid, $str)->toString();
+        }
     }
+
 }
