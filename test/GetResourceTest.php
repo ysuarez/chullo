@@ -5,57 +5,66 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Islandora\Chullo\Chullo;
+use Islandora\Chullo\FedoraApi;
 
-class GetResourceTest extends \PHPUnit_Framework_TestCase {
+class GetResourceTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @covers  Islandora\Fedora\Chullo::getResource
      * @uses    GuzzleHttp\Client
      */
-    public function testReturnsContentOn200() {
+    public function testReturnsContentOn200()
+    {
         $mock = new MockHandler([
             new Response(200, [], "SOME CONTENT"),
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
-
+        $guzzle = new Client(['handler' => $handler]);
+        $api = new FedoraApi($guzzle);
+        $client = new Chullo($api);
         $result = $client->getResource("");
         $this->assertSame((string)$result, "SOME CONTENT");
+    }
+
+    /**
+     * @covers  Islandora\Fedora\FedoraApi::getResource
+     * @uses    GuzzleHttp\Client
+     */
+    public function testReturnsApiContentOn200()
+    {
+        $mock = new MockHandler([
+            new Response(200, ['X-FOO' => 'Fedora4'], "SOME CONTENT"),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $guzzle = new Client(['handler' => $handler]);
+        $api = new FedoraApi($guzzle);
+        $result = $api->getResource("");
+        $this->assertSame((string)$result->getBody(), "SOME CONTENT");
+        $this->assertSame($result->getHeader('X-FOO'), ['Fedora4']);
     }
 
     /**
      * @covers  Islandora\Fedora\Chullo::getResource
      * @uses    GuzzleHttp\Client
      */
-    public function testReturnsNullOn304() {
+    public function testReturnsNullOtherwise()
+    {
         $mock = new MockHandler([
             new Response(304),
-        ]);
-
-        $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
-
-        $result = $client->getResource("");
-        $this->assertNull($result);
-    }
-
-    /**
-     * @covers            Islandora\Fedora\Chullo::getResource
-     * @uses              GuzzleHttp\Client
-     * @expectedException GuzzleHttp\Exception\ClientException
-     */
-    public function testThrowsExceptionOn404() {
-        $mock = new MockHandler([
             new Response(404),
         ]);
 
         $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler, 'base_uri' => 'http://localhost:8080/fcrepo/rest']);
-        $client = new Chullo($guzzle);
+        $guzzle = new Client(['handler' => $handler]);
+        $api = new FedoraApi($guzzle);
+        $client = new Chullo($api);
 
-        $result = $client->getResource("");
+        foreach ($mock as $response) {
+            $result = $client->getResource("");
+            $this->assertFalse($result);
+        }
     }
 }

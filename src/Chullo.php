@@ -11,6 +11,7 @@
  * @category Islandora
  * @package  Islandora
  * @author   Daniel Lamb <daniel@discoverygarden.ca>
+ * @author   Nick Ruest <ruestn@gmail.com>
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GPL
  * @link     http://www.islandora.ca
  */
@@ -20,7 +21,7 @@ namespace Islandora\Chullo;
 use GuzzleHttp\Client;
 
 /**
- * Default implementation of IFedoraClient using Guzzle.
+ * Default implementation of IFedoraClient
  *
  * @category Islandora
  * @package  Islandora
@@ -28,17 +29,20 @@ use GuzzleHttp\Client;
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GPL
  * @link     http://www.islandora.ca
  */
-class Chullo implements IFedoraClient {
+class Chullo implements IFedoraClient
+{
 
-    protected $client;
+    protected $api; // IFedoraApi
 
-    public function __construct(Client $client) {
-        $this->client = $client;
+    public function __construct(IFedoraApi $api)
+    {
+        $this->api = $api;
     }
 
-    static public function create($fedora_rest_url) {
-        $guzzle = new Client(['base_uri' => $fedora_rest_url]);
-        return new Chullo($guzzle);
+    public static function create($fedora_rest_url)
+    {
+        $api = FedoraApi::create($fedora_rest_url);
+        return new static($api);
     }
 
     /**
@@ -46,8 +50,9 @@ class Chullo implements IFedoraClient {
      *
      * @return string
      */
-    public function getBaseUri() {
-        return $this->client->getConfig('base_uri');
+    public function getBaseUri()
+    {
+        return $this->api->getBaseUri();
     }
 
     /**
@@ -57,31 +62,63 @@ class Chullo implements IFedoraClient {
      * @param array     $headers        HTTP Headers
      * @param string    $transaction    Transaction id
      *
-     * @return mixed    String or binary content if 200.  Null if 304.
+     * @return mixed    Full response if found.  Null otherwise.
      */
-    public function getResource($uri = "",
-                                $headers = [],
-                                $transaction = "") {
-        // Set headers
-        $options = ['headers' => $headers];
-
-        // Ensure uri takes transaction into account.
-        $uri = $this->prepareUri($uri, $transaction);
-
-        // Send the request.
-        $response = $this->client->request(
-            'GET',
+    public function getResource(
+        $uri = "",
+        $headers = [],
+        $transaction = ""
+    ) {
+        $response = $this->api->getResource(
             $uri,
-            $options
+            $headers,
+            $transaction
         );
-
-        $code = $response->getStatusCode();
-
-        if ($code == 304) {
+        if ($response->getStatusCode() != 200) {
             return null;
         }
 
-        return $response->getBody();
+        return (string)$response->getBody();
+    }
+
+    /**
+     * Gets a Fedora resource's headers.
+     *
+     * @param string    $uri            Resource URI
+     * @param string    $transaction    Transaction id
+     *
+     * @return array    Headers of a resource, null on failure
+     */
+    public function getResourceHeaders(
+        $uri = "",
+        $transaction = ""
+    ) {
+        $response = $this->api->getResourceHeaders(
+            $uri,
+            $transaction
+        );
+
+        if ($response->getStatusCode() != 200) {
+            return null;
+        }
+
+        return $response->getHeaders();
+    }
+
+    /**
+     * Gets information about the supported HTTP methods, etc., for a Fedora resource.
+     *
+     * @param string    $uri            Resource URI
+     *
+     * @return string   Options of a resource.
+     */
+    public function getResourceOptions($uri = "")
+    {
+        $response = $this->api->getResourceOptions(
+            $uri
+        );
+
+        return $response->getHeaders();
     }
 
     /**
@@ -91,15 +128,16 @@ class Chullo implements IFedoraClient {
      * @param array     $headers        HTTP Headers
      * @param string    $transaction    Transaction id
      *
-     * @return EasyRdf_Graph
+     * @return EasyRdf_Graph    EasyRdf_Graph if found, null otherwise
      */
-    public function getGraph($uri = "",
-                             $headers = [],
-                             $transaction = "") {
+    public function getGraph(
+        $uri = "",
+        $headers = [],
+        $transaction = ""
+    ) {
 
         $headers['Accept'] = 'application/ld+json';
-        $rdf = (string)$this->getResource($uri, $headers, $transaction);
-
+        $rdf = $this->getResource($uri, $headers, $transaction);
         if (empty($rdf)) {
             return null;
         }
@@ -118,35 +156,27 @@ class Chullo implements IFedoraClient {
      * @param string    $transaction    Transaction id
      * @param string    $checksum       SHA-1 checksum
      *
-     * @return string   Uri of newly created resource
+     * @return string   Uri of newly created resource or null if failed
      */
-    public function createResource($uri = "",
-                                   $content = null,
-                                   $headers = [],
-                                   $transaction = "",
-                                   $checksum = "") {
+    public function createResource(
+        $uri = "",
+        $content = null,
+        $headers = [],
+        $transaction = "",
+        $checksum = ""
+    ) {
 
-        $options = [];
-
-        // Set content.
-        $options['body'] = $content;
-
-        // Set headers.
-        $options['headers'] = $headers;
-
-        // Set query string.
-        if (!empty($checksum)) {
-            $options['query'] = ['checksum' => $checksum];
-        }
-
-        // Ensure uri takes transaction into account.
-        $uri = $this->prepareUri($uri, $transaction);
-
-        $response = $this->client->request(
-            'POST',
+        $response = $this->api->createResource(
             $uri,
-            $options
+            $content,
+            $headers,
+            $transaction,
+            $checksum
         );
+
+        if ($response->getStatusCode() != 201) {
+            return null;
+        }
 
         // Return the value of the location header
         $locations = $response->getHeader('Location');
@@ -162,36 +192,24 @@ class Chullo implements IFedoraClient {
      * @param string    $transaction    Transaction id
      * @param string    $checksum       SHA-1 checksum
      *
-     * @return null
+     * @return boolean  True if successful
      */
-    public function saveResource($uri,
-                                 $content = null,
-                                 $headers = [],
-                                 $transaction = "",
-                                 $checksum = "") {
-        $options = [];
-
-        // Set content.
-        $options['body'] = $content;
-
-        // Set headers.
-        $options['headers'] = $headers;
-
-        // Set query string.
-        if (!empty($checksum)) {
-            $options['query'] = ['checksum' => $checksum];
-        }
-
-        // Ensure uri takes transaction into account.
-        $uri = $this->prepareUri($uri, $transaction);
-
-        $response = $this->client->request(
-            'PUT',
+    public function saveResource(
+        $uri,
+        $content = null,
+        $headers = [],
+        $transaction = "",
+        $checksum = ""
+    ) {
+        $response = $this->api->saveResource(
             $uri,
-            $options
+            $content,
+            $headers,
+            $transaction,
+            $checksum
         );
 
-        return null;
+        return $response->getStatusCode() == 204;
     }
 
     /**
@@ -201,11 +219,13 @@ class Chullo implements IFedoraClient {
      * @param EasyRdf_Resource  $graph          Graph to save
      * @param string            $transaction    Transaction id
      *
-     * @return null
+     * @return boolean  True if successful
      */
-    public function saveGraph($uri,
-                              \EasyRdf_Graph $graph,
-                              $transaction = "") {
+    public function saveGraph(
+        $uri,
+        \EasyRdf_Graph $graph,
+        $transaction = ""
+    ) {
         // Serialze the rdf.
         $turtle = $graph->serialise('turtle');
 
@@ -230,31 +250,22 @@ class Chullo implements IFedoraClient {
      * @param array     $headers        HTTP Headers
      * @param string    $transaction    Transaction id
      *
-     * @return null
+     * @return boolean  True if successful
      */
-    public function modifyResource($uri,
-                                   $sparql = "",
-                                   $headers = [],
-                                   $transaction = "") {
-        $options = [];
-
-        // Set content.
-        $options['body'] = $sparql;
-
-        // Set headers.
-        $options['headers'] = $headers;
-        $options['headers']['Content-Type'] = 'application/sparql-update';
-
-        // Ensure uri takes transaction into account.
-        $uri = $this->prepareUri($uri, $transaction);
-
-        $response = $this->client->request(
-            'PATCH',
+    public function modifyResource(
+        $uri,
+        $sparql = "",
+        $headers = [],
+        $transaction = ""
+    ) {
+        $response = $this->api->modifyResource(
             $uri,
-            $options
+            $sparql,
+            $headers,
+            $transaction
         );
 
-        return null;
+        return $response->getStatusCode() == 204;
     }
 
     /**
@@ -263,62 +274,91 @@ class Chullo implements IFedoraClient {
      * @param string    $uri            Resource URI
      * @param string    $transaction    Transaction id
      *
-     * @return null
+     * @return boolean  True if successful
      */
-    public function deleteResource($uri,
-                                   $transaction = "") {
-        // Ensure uri takes transaction into account.
-        $uri = $this->prepareUri($uri, $transaction);
-
-        $this->client->request(
-            'DELETE',
-            $uri
+    public function deleteResource(
+        $uri,
+        $transaction = ""
+    ) {
+        $response = $this->api->deleteResource(
+            $uri,
+            $transaction
         );
 
-        return null;
+        return $response->getStatusCode() == 204;
     }
 
-    protected function prepareUri($uri, $transaction = "") {
-        $base_uri = rtrim($this->getBaseUri(), '/');
+    /**
+     * Issues a COPY request to Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param array     $destination    Destination URI
+     * @param string    $transaction    Transaction id
+     *
+     * @return string   Uri of newly created copy or null if failed
+     */
+    public function copyResource(
+        $uri,
+        $destination,
+        $transaction = ""
+    ) {
+        $response = $this->api->copyResource(
+            $uri,
+            $destination,
+            $transaction
+        );
 
-        if (empty($uri)) {
-            return "$base_uri/$transaction";
+        if ($response->getStatusCode() != 201) {
+            return null;
         }
 
-        if (strpos($uri, $base_uri) !== 0) {
-            $uri = $base_uri . '/' . ltrim($uri, '/');
-        }
-
-        $uri = rtrim($uri, '/');
-
-        if (strcmp($uri, $base_uri) == 0) {
-            return "$base_uri/$transaction";
-        }
-
-        if (empty($transaction)) {
-            return $uri;
-        }
-
-        $exploded = explode($base_uri, $uri);
-        $relative_path = ltrim($exploded[1], '/');
-        $exploded = explode('/', $relative_path);
-
-        if (in_array($transaction, $exploded)) {
-            return $uri;
-        }
-
-        return implode([$base_uri, $transaction, $relative_path], '/');
+        // Return the value of the location header
+        $locations = $response->getHeader('Location');
+        return reset($locations);
     }
 
+    /**
+     * Issues a MOVE request to Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param array     $destination    Destination URI
+     * @param string    $transaction    Transaction id
+     *
+     * @return string   Uri of moved resource or null if failed
+     */
+    public function moveResource(
+        $uri,
+        $destination,
+        $transaction = ""
+    ) {
+        $response = $this->api->moveResource(
+            $uri,
+            $destination,
+            $transaction
+        );
+
+        if ($response->getStatusCode() != 201) {
+            return null;
+        }
+
+        // Return the value of the location header
+        $locations = $response->getHeader('Location');
+        return reset($locations);
+    }
 
     /**
      * Creates a new transaction.
      *
-     * @return string   Transaction id
+     * @return string   Transaction id or null if failure
      */
-    public function createTransaction() {
+    public function createTransaction()
+    {
         // Create the transaction.
         $uri = $this->createResource("fcr:tx");
+
+        if (empty($uri)) {
+            return null;
+        }
 
         // Hack the tx id out of the response uri.
         $trimmed = rtrim($uri, '/');
@@ -331,16 +371,15 @@ class Chullo implements IFedoraClient {
      *
      * @param string    $id Transaction id
      *
-     * @return string   Fedora response
+     * @return boolean  True if successful
      */
-    public function extendTransaction($id) {
-        $uri = $this->generateTransactionUri($id);
-        $this->client->request(
-            'POST',
-            $uri
+    public function extendTransaction($id)
+    {
+        $response = $this->api->extendTransaction(
+            $id
         );
 
-        return null;
+        return $response->getStatusCode() == 204;
     }
 
     /**
@@ -348,16 +387,15 @@ class Chullo implements IFedoraClient {
      *
      * @param string    $id Transaction id
      *
-     * @return boolean
+     * @return boolean  True if successful
      */
-    public function commitTransaction($id) {
-        $uri = $this->generateTransactionUri($id) . '/fcr:tx/fcr:commit';
-        $this->client->request(
-            'POST',
-            $uri
+    public function commitTransaction($id)
+    {
+        $response = $this->api->commitTransaction(
+            $id
         );
 
-        return null;
+        return $response->getStatusCode() == 204;
     }
 
     /**
@@ -365,21 +403,14 @@ class Chullo implements IFedoraClient {
      *
      * @param string    $id Transaction id
      *
-     * @return boolean
+     * @return boolean  True if successful
      */
-    public function rollbackTransaction($id) {
-        $uri = $this->generateTransactionUri($id) . '/fcr:tx/fcr:rollback';
-        $this->client->request(
-            'POST',
-            $uri
+    public function rollbackTransaction($id)
+    {
+        $response = $this->api->rollbackTransaction(
+            $id
         );
 
-        return null;
+        return $response->getStatusCode() == 204;
     }
-
-    protected function generateTransactionUri($id) {
-        $base = rtrim($this->getBaseUri(), '/');
-        return $base . '/' . ltrim($id, '/');
-    }
-
 }

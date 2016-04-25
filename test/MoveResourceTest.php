@@ -7,17 +7,17 @@ use GuzzleHttp\Psr7\Response;
 use Islandora\Chullo\Chullo;
 use Islandora\Chullo\FedoraApi;
 
-class CreateResourceTest extends \PHPUnit_Framework_TestCase
+class MoveResourceTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::createResource
+     * @covers  Islandora\Fedora\Chullo::moveResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsUriOn201()
     {
         $mock = new MockHandler([
-            new Response(201, ['Location' => "SOME URI"]),
+            new Response(201, ['Location' => "http://localhost:8080/fcrepo/rest/SOME_URI"]),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -25,12 +25,12 @@ class CreateResourceTest extends \PHPUnit_Framework_TestCase
         $api = new FedoraApi($guzzle);
         $client = new Chullo($api);
 
-        $result = $client->createResource("");
-        $this->assertSame($result, "SOME URI");
+        $result = $client->moveResource("", "");
+        $this->assertSame($result, "http://localhost:8080/fcrepo/rest/SOME_URI");
     }
 
     /**
-     * @covers            Islandora\Fedora\Chullo::createResource
+     * @covers            Islandora\Fedora\Chullo::moveResource
      * @uses              GuzzleHttp\Client
      */
     public function testReturnsNullOtherwise()
@@ -38,6 +38,7 @@ class CreateResourceTest extends \PHPUnit_Framework_TestCase
         $mock = new MockHandler([
             new Response(404),
             new Response(409),
+            new Response(502),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -45,12 +46,9 @@ class CreateResourceTest extends \PHPUnit_Framework_TestCase
         $api = new FedoraApi($guzzle);
         $client = new Chullo($api);
 
-        // 404
-        $result = $client->createResource("");
-        $this->assertNull($result);
-
-        // 409
-        $result = $client->createResource("");
-        $this->assertNull($result);
+        foreach ($mock as $response) {
+            $result = $client->moveResource("", "");
+            $this->assertNull($result);
+        }
     }
 }
