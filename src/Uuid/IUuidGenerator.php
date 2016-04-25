@@ -11,7 +11,7 @@
  * @category Islandora
  * @package  Islandora
  * @author   Daniel Lamb <daniel@discoverygarden.ca>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GPL
+ * @license  https://opensource.org/licenses/MIT MIT
  * @link     http://www.islandora.ca
  */
 
@@ -23,7 +23,7 @@ namespace Islandora\Chullo\Uuid;
  * @category Islandora
  * @package  Islandora
  * @author   Daniel Lamb <daniel@discoverygarden.ca>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GPL
+ * @license  https://opensource.org/licenses/MIT MIT
  * @link     http://www.islandora.ca
  */
 interface IUuidGenerator {
