@@ -64,7 +64,9 @@ Take a look at [Creating a pull request](https://help.github.com/articles/creati
 
 You may want to read [Syncing a fork](https://help.github.com/articles/syncing-a-fork) for instructions on how to keep your fork up to date with the latest changes of the upstream (official) `Islandora-CLAW` repository.
 
-Please note that TravisCI will test for [PSR-2](http://www.php-fig.org/psr/psr-2/) compliance. You can verify coding standard compliance with [PHP Codesniffer](https://github.com/squizlabs/PHP_CodeSniffer), or use a utility like PHP [Coding Standards Fixer](http://cs.sensiolabs.org/).
+Please note that TravisCI will test for [PSR-2](http://www.php-fig.org/psr/psr-2/) compliance. You can verify coding standard compliance with [PHP Codesniffer](https://github.com/squizlabs/PHP_CodeSniffer).
+
+**Note**: Due to differing interpretations of the PSR-2 coding standards do **not** use PHP [Coding Standards Fixer](http://cs.sensiolabs.org/). Coding Standards Fixer may make changes to your code that can cause it to fail our TravisCI tests.
 
 In addition, Islandora 7.x-2.x Committers will review contributions for [PSR-4 ](http://www.php-fig.org/psr/psr-4/) compliance. 
 
