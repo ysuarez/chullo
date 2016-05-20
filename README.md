@@ -1,4 +1,4 @@
-#Chullo 
+# ![Chullo](https://cloud.githubusercontent.com/assets/2371345/15409650/21fd66a6-1dec-11e6-9fb3-4a1554a0fb3d.png) Chullo
 
 Chullo is a PHP client for Fedora 4 built using Guzzle and EasyRdf.
 
