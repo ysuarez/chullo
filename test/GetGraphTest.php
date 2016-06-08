@@ -103,9 +103,12 @@ EOD;
         $api = new FedoraApi($guzzle);
         $client = new Chullo($api);
 
-        foreach ($mock as $response) {
-            $result = $client->getGraph("");
-            $this->assertNull($result);
-        }
+        // 304
+        $result = $client->getGraph("");
+        $this->assertNull($result);
+
+        //404
+        $result = $client->getGraph("");
+        $this->assertNull($result);
     }
 }
