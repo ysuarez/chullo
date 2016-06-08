@@ -15,6 +15,7 @@ before_install:
 script:
   - php vendor/bin/phpunit 
   - php vendor/bin/phpcs --standard=PSR2 src test
+  - php vendor/bin/phpunit --coverage-clover=coverage.xml
 
 notifications:
   irc: "irc.freenode.org#islandora"
