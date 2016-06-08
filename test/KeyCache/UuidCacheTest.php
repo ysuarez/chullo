@@ -24,7 +24,7 @@ class UuidCacheTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @covers RedisKeyCache::set
+     * @covers Islandora\Chullo\KeyCache\RedisKeyCache::set
      * @group UnitTest
      */
     public function testAddUuidPair()
@@ -42,7 +42,7 @@ class UuidCacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers RedisKeyCache::getByUuid
+     * @covers Islandora\Chullo\KeyCache\RedisKeyCache::getByUuid
      * @group UnitTest
      */
     public function testGetByUuid()
@@ -61,7 +61,7 @@ class UuidCacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers RedisKeyCache::getByPath
+     * @covers Islandora\Chullo\KeyCache\RedisKeyCache::getByPath
      * @group UnitTest
      */
     public function testGetByPath()
@@ -89,7 +89,7 @@ class UuidCacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers RedisKeyCache::delete
+     * @covers Islandora\Chullo\KeyCache\RedisKeyCache::delete
      * @group UnitTest
      */
     public function testDelete()

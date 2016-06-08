@@ -13,7 +13,7 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::getResource
+     * @covers  Islandora\Chullo\Chullo::getResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsContentOn200()
@@ -31,7 +31,7 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers  Islandora\Fedora\FedoraApi::getResource
+     * @covers  Islandora\Chullo\FedoraApi::getResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsApiContentOn200()
@@ -49,7 +49,7 @@ class GetResourceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers  Islandora\Fedora\Chullo::getResource
+     * @covers  Islandora\Chullo\Chullo::getResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsNullOtherwise()

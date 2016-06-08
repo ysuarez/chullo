@@ -13,7 +13,7 @@ class GetGraphTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::getGraph
+     * @covers  Islandora\Chullo\Chullo::getGraph
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsContentOn200()
@@ -88,7 +88,7 @@ EOD;
     }
 
     /**
-     * @covers  Islandora\Fedora\Chullo::getGraph
+     * @covers  Islandora\Chullo\Chullo::getGraph
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsNullOtherwise()
