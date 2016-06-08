@@ -13,7 +13,7 @@ class GetResourceHeadersTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::getResourceHeaders
+     * @covers  Islandora\Chullo\Chullo::getResourceHeaders
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsHeadersOn200()
@@ -45,7 +45,7 @@ class GetResourceHeadersTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            Islandora\Fedora\Chullo::getResourceHeaders
+     * @covers            Islandora\Chullo\Chullo::getResourceHeaders
      * @uses              GuzzleHttp\Client
      */
     public function testReturnsNullOtherwise()

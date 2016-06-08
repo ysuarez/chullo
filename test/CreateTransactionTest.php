@@ -13,7 +13,7 @@ class CreateTransactionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::createTransaction
+     * @covers  Islandora\Chullo\Chullo::createTransaction
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsIdOn201()

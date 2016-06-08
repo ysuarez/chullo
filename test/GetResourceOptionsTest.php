@@ -13,7 +13,7 @@ class GetResourceOptionsTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::getResourceOptions
+     * @covers  Islandora\Chullo\Chullo::getResourceOptions
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsHeadersOn200()

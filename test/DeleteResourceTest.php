@@ -13,7 +13,7 @@ class DeleteResourceTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::deleteResource
+     * @covers  Islandora\Chullo\Chullo::deleteResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsTrueOn204()
@@ -32,7 +32,7 @@ class DeleteResourceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            Islandora\Fedora\Chullo::deleteResource
+     * @covers            Islandora\Chullo\Chullo::deleteResource
      * @uses              GuzzleHttp\Client
      */
     public function testReturnsFalseOtherwise()
