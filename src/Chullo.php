@@ -34,6 +34,9 @@ class Chullo implements IFedoraClient
 
     protected $api; // IFedoraApi
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(IFedoraApi $api)
     {
         $this->api = $api;
