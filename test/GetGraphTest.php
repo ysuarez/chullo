@@ -1,5 +1,7 @@
 <?php
 
+namespace Islandora\Chullo;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -11,7 +13,7 @@ class GetGraphTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::getGraph
+     * @covers  Islandora\Chullo\Chullo::getGraph
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsContentOn200()
@@ -19,7 +21,11 @@ class GetGraphTest extends \PHPUnit_Framework_TestCase
         $fixture = <<<EOD
             [ {
               "@id" : "http://127.0.0.1:8080/fcrepo/rest/4d/8b/2d/8e/4d8b2d8e-d063-4c9f-aac9-6b285b193ed6",
-              "@type" : [ "http://www.w3.org/ns/ldp#RDFSource", "http://www.w3.org/ns/ldp#Container", "http://www.jcp.org/jcr/nt/1.0folder", "http://www.jcp.org/jcr/nt/1.0hierarchyNode", "http://www.jcp.org/jcr/nt/1.0base", "http://www.jcp.org/jcr/mix/1.0created", "http://fedora.info/definitions/v4/repository#Container", "http://fedora.info/definitions/v4/repository#Resource", "http://www.jcp.org/jcr/mix/1.0lastModified", "http://www.jcp.org/jcr/mix/1.0referenceable" ],
+              "@type" : [ "http://www.w3.org/ns/ldp#RDFSource", "http://www.w3.org/ns/ldp#Container",
+"http://www.jcp.org/jcr/nt/1.0folder", "http://www.jcp.org/jcr/nt/1.0hierarchyNode", 
+"http://www.jcp.org/jcr/nt/1.0base", "http://www.jcp.org/jcr/mix/1.0created", 
+"http://fedora.info/definitions/v4/repository#Container", "http://fedora.info/definitions/v4/repository#Resource", 
+"http://www.jcp.org/jcr/mix/1.0lastModified", "http://www.jcp.org/jcr/mix/1.0referenceable" ],
               "http://fedora.info/definitions/v4/repository#created" : [ {
                 "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
                 "@value" : "2015-10-03T02:14:34.391Z"
@@ -28,7 +34,8 @@ class GetGraphTest extends \PHPUnit_Framework_TestCase
                 "@value" : "bypassAdmin"
               } ],
               "http://fedora.info/definitions/v4/repository#exportsAs" : [ {
-                "@id" : "http://127.0.0.1:8080/fcrepo/rest/4d/8b/2d/8e/4d8b2d8e-d063-4c9f-aac9-6b285b193ed6/fcr:export?format=jcr/xml"
+                "@id" : 
+"http://127.0.0.1:8080/fcrepo/rest/4d/8b/2d/8e/4d8b2d8e-d063-4c9f-aac9-6b285b193ed6/fcr:export?format=jcr/xml"
               } ],
               "http://fedora.info/definitions/v4/repository#hasParent" : [ {
                 "@id" : "http://127.0.0.1:8080/fcrepo/rest/"
@@ -56,7 +63,8 @@ class GetGraphTest extends \PHPUnit_Framework_TestCase
                 "@value" : "My Sweet Title"
               } ]
             }, {
-              "@id" : "http://127.0.0.1:8080/fcrepo/rest/4d/8b/2d/8e/4d8b2d8e-d063-4c9f-aac9-6b285b193ed6/fcr:export?format=jcr/xml",
+              "@id" : 
+"http://127.0.0.1:8080/fcrepo/rest/4d/8b/2d/8e/4d8b2d8e-d063-4c9f-aac9-6b285b193ed6/fcr:export?format=jcr/xml",
               "http://purl.org/dc/elements/1.1/format" : [ {
                 "@id" : "http://fedora.info/definitions/v4/repository#jcr/xml"
               } ]
@@ -80,7 +88,7 @@ EOD;
     }
 
     /**
-     * @covers  Islandora\Fedora\Chullo::getGraph
+     * @covers  Islandora\Chullo\Chullo::getGraph
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsNullOtherwise()
@@ -95,9 +103,12 @@ EOD;
         $api = new FedoraApi($guzzle);
         $client = new Chullo($api);
 
-        foreach ($mock as $response) {
-            $result = $client->getGraph("");
-            $this->assertNull($result);
-        }
+        // 304
+        $result = $client->getGraph("");
+        $this->assertNull($result);
+
+        //404
+        $result = $client->getGraph("");
+        $this->assertNull($result);
     }
 }

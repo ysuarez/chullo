@@ -1,5 +1,7 @@
 <?php
 
+namespace Islandora\Chullo;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -11,7 +13,7 @@ class CommitTransactionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::commitTransaction
+     * @covers  Islandora\Chullo\Chullo::commitTransaction
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsTrue204()
@@ -30,7 +32,7 @@ class CommitTransactionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            Islandora\Fedora\Chullo::commitTransaction
+     * @covers            Islandora\Chullo\Chullo::commitTransaction
      * @uses              GuzzleHttp\Client
      */
     public function testReturnsFalseOtherwise()

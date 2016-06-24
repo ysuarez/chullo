@@ -24,7 +24,11 @@ class TriplestoreClient implements ITriplestoreClient
 
     protected $client;
 
-    public function __construct(Client $client) {
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __construct(Client $client)
+    {
         $this->client = $client;
     }
 
@@ -34,6 +38,7 @@ class TriplestoreClient implements ITriplestoreClient
      * @param string    $sparql_endpoint    Url for sparql endpoint
      *
      * @return TriplestoreClient
+     * @codeCoverageIgnore
      */
     public static function create($sparql_endpoint)
     {
@@ -48,7 +53,8 @@ class TriplestoreClient implements ITriplestoreClient
      *
      * @return EasyRdf_Sparql_Result    Results object
      */
-    public function query($sparql) {
+    public function query($sparql)
+    {
         $response = $this->client->post("", [
             'query' => [
                 'format' => 'json',

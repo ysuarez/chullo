@@ -1,5 +1,7 @@
 <?php
 
+namespace Islandora\Chullo;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -11,7 +13,7 @@ class CreateTransactionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::createTransaction
+     * @covers  Islandora\Chullo\Chullo::createTransaction
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsIdOn201()
@@ -27,5 +29,14 @@ class CreateTransactionTest extends \PHPUnit_Framework_TestCase
 
         $result = $client->createTransaction();
         $this->assertSame($result, "tx:abc-123");
+    }
+    /**
+     * @covers  Islandora\Chullo\Chullo::createTransaction
+     */
+    public function testReturnsEmpty()
+    {
+        $uri = null;
+        $this->assertEmpty($uri);
+        $this->assertNull($uri);
     }
 }

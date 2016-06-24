@@ -1,5 +1,7 @@
 <?php
 
+namespace Islandora\Chullo;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -11,7 +13,7 @@ class ModifyResourceTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::modifyResource
+     * @covers  Islandora\Chullo\Chullo::modifyResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsTrueOn204()
@@ -30,7 +32,7 @@ class ModifyResourceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            Islandora\Fedora\Chullo::modifyResource
+     * @covers            Islandora\Chullo\Chullo::modifyResource
      * @uses              GuzzleHttp\Client
      */
     public function testReturnsFalseOtherwise()

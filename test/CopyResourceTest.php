@@ -1,5 +1,7 @@
 <?php
 
+namespace Islandora\Chullo;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -11,7 +13,7 @@ class CopyResourceTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Fedora\Chullo::copyResource
+     * @covers  Islandora\Chullo\Chullo::copyResource
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsUriOn201()
@@ -30,7 +32,7 @@ class CopyResourceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            Islandora\Fedora\Chullo::copyResource
+     * @covers            Islandora\Chullo\Chullo::copyResource
      * @uses              GuzzleHttp\Client
      */
     public function testReturnsNullOtherwise()
@@ -46,9 +48,16 @@ class CopyResourceTest extends \PHPUnit_Framework_TestCase
         $api = new FedoraApi($guzzle);
         $client = new Chullo($api);
 
-        foreach ($mock as $response) {
-            $result = $client->copyResource("", "");
-            $this->assertNull($result);
-        }
+        //404
+        $result = $client->copyResource("", "");
+        $this->assertNull($result);
+        
+        //409
+        $result = $client->copyResource("", "");
+        $this->assertNull($result);
+        
+        //502
+        $result = $client->copyResource("", "");
+        $this->assertNull($result);
     }
 }

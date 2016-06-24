@@ -34,6 +34,9 @@ class Chullo implements IFedoraClient
 
     protected $api; // IFedoraApi
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(IFedoraApi $api)
     {
         $this->api = $api;
@@ -135,7 +138,6 @@ class Chullo implements IFedoraClient
         $headers = [],
         $transaction = ""
     ) {
-
         $headers['Accept'] = 'application/ld+json';
         $rdf = $this->getResource($uri, $headers, $transaction);
         if (empty($rdf)) {
@@ -165,7 +167,6 @@ class Chullo implements IFedoraClient
         $transaction = "",
         $checksum = ""
     ) {
-
         $response = $this->api->createResource(
             $uri,
             $content,
