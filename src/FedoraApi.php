@@ -139,11 +139,10 @@ class FedoraApi implements IFedoraApi
     /**
      * Creates a new resource in Fedora.
      *
-     * @param string    $uri            Resource URI
-     * @param string    $content        String or binary content
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     * @param string    $checksum       SHA-1 checksum
+     * @param string    $uri                  Resource URI
+     * @param string    $content              String or binary content
+     * @param array     $headers              HTTP Headers
+     * @param string    $transaction          Transaction id
      *
      * @return ResponseInterface
      */
@@ -151,8 +150,7 @@ class FedoraApi implements IFedoraApi
         $uri = "",
         $content = null,
         $headers = [],
-        $transaction = "",
-        $checksum = ""
+        $transaction = ""
     ) {
         $options = ['http_errors' => false];
 
@@ -161,11 +159,6 @@ class FedoraApi implements IFedoraApi
 
         // Set headers.
         $options['headers'] = $headers;
-
-        // Set query string.
-        if (!empty($checksum)) {
-            $options['query'] = ['checksum' => $checksum];
-        }
 
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
@@ -180,11 +173,10 @@ class FedoraApi implements IFedoraApi
     /**
      * Saves a resource in Fedora.
      *
-     * @param string    $uri            Resource URI
-     * @param string    $content        String or binary content
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     * @param string    $checksum       SHA-1 checksum
+     * @param string    $uri                  Resource URI
+     * @param string    $content              String or binary content
+     * @param array     $headers              HTTP Headers
+     * @param string    $transaction          Transaction id
      *
      * @return ResponseInterface
      */
@@ -192,8 +184,7 @@ class FedoraApi implements IFedoraApi
         $uri,
         $content = null,
         $headers = [],
-        $transaction = "",
-        $checksum = ""
+        $transaction = ""
     ) {
         $options = ['http_errors' => false];
 
@@ -202,11 +193,6 @@ class FedoraApi implements IFedoraApi
 
         // Set headers.
         $options['headers'] = $headers;
-
-        // Set query string.
-        if (!empty($checksum)) {
-            $options['query'] = ['checksum' => $checksum];
-        }
 
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);

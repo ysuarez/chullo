@@ -153,11 +153,10 @@ class Chullo implements IFedoraClient
     /**
      * Creates a new resource in Fedora.
      *
-     * @param string    $uri            Resource URI
-     * @param string    $content        String or binary content
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     * @param string    $checksum       SHA-1 checksum
+     * @param string    $uri                  Resource URI
+     * @param string    $content              String or binary content
+     * @param array     $headers              HTTP Headers
+     * @param string    $transaction          Transaction id
      *
      * @return string   Uri of newly created resource or null if failed
      */
@@ -165,15 +164,13 @@ class Chullo implements IFedoraClient
         $uri = "",
         $content = null,
         $headers = [],
-        $transaction = "",
-        $checksum = ""
+        $transaction = ""
     ) {
         $response = $this->api->createResource(
             $uri,
             $content,
             $headers,
-            $transaction,
-            $checksum
+            $transaction
         );
 
         if ($response->getStatusCode() != 201) {
@@ -188,11 +185,10 @@ class Chullo implements IFedoraClient
     /**
      * Saves a resource in Fedora.
      *
-     * @param string    $uri            Resource URI
-     * @param string    $content        String or binary content
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     * @param string    $checksum       SHA-1 checksum
+     * @param string    $uri                  Resource URI
+     * @param string    $content              String or binary content
+     * @param array     $headers              HTTP Headers
+     * @param string    $transaction          Transaction id
      *
      * @return boolean  True if successful
      */
@@ -200,15 +196,13 @@ class Chullo implements IFedoraClient
         $uri,
         $content = null,
         $headers = [],
-        $transaction = "",
-        $checksum = ""
+        $transaction = ""
     ) {
         $response = $this->api->saveResource(
             $uri,
             $content,
             $headers,
-            $transaction,
-            $checksum
+            $transaction
         );
 
         return $response->getStatusCode() == 204;
@@ -232,15 +226,17 @@ class Chullo implements IFedoraClient
         $turtle = $graph->serialise('turtle');
 
         // Checksum it.
-        $checksum = sha1($turtle);
+        $checksum_value = sha1($turtle);
 
         // Save it.
         return $this->saveResource(
             $uri,
             $turtle,
-            ['Content-Type' => 'text/turtle'],
-            $transaction,
-            $checksum
+            [
+              'Content-Type' => 'text/turtle',
+              'digest' => 'sha1='.$checksum_value
+            ],
+            $transaction
         );
     }
 
