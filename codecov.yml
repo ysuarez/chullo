@@ -1,0 +1,33 @@
+codecov:
+  # Default branch for CodeCov information
+  branch: master
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+  
+  status:
+    project:
+      default:
+        target: auto
+        # Only against master
+        branches: master
+
+   patch:
+      default:
+        target: auto
+        # Only against master
+        branches: master
+
+    changes:
+      default:
+        # Only against master
+        branches: master
+
+comment:
+  layout: "header, diff, changes, sunburst, uncovered"
+  # Comment on all branches, including PRs
+  branches: null
+  behavior: default
+  
