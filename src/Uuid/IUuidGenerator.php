@@ -10,7 +10,7 @@
  *
  * @category Islandora
  * @package  Islandora
- * @author   Daniel Lamb <daniel@discoverygarden.ca>
+ * @author   Daniel Lamb <dlamb@islandora.ca>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     http://www.islandora.ca
  */
@@ -19,12 +19,6 @@ namespace Islandora\Chullo\Uuid;
 
 /**
  * Interface for generating UUIDs.
- *
- * @category Islandora
- * @package  Islandora
- * @author   Daniel Lamb <daniel@discoverygarden.ca>
- * @license  https://opensource.org/licenses/MIT MIT
- * @link     http://www.islandora.ca
  */
 interface IUuidGenerator
 {

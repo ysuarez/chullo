@@ -10,7 +10,7 @@
  *
  * @category Islandora
  * @package  Islandora
- * @author   Daniel Lamb <daniel@discoverygarden.ca>
+ * @author   Daniel Lamb <dlamb@islandora.ca>
  * @author   Nick Ruest <ruestn@gmail.com>
  * @author   Diego Pino <dpino@metro.org>
  * @license  https://opensource.org/licenses/MIT MIT
