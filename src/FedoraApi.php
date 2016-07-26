@@ -12,6 +12,8 @@
  * @package  Islandora
  * @author   Daniel Lamb <daniel@discoverygarden.ca>
  * @author   Nick Ruest <ruestn@gmail.com>
+ * @author   Jared Whiklo <Jared.Whiklo@umanitoba.ca>
+ * @author   Diego Pino <dpino@metro.org>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     http://www.islandora.ca
  */
@@ -24,12 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Default implementation of IFedoraApi using Guzzle.
- *
- * @category Islandora
- * @package  Islandora
- * @author   Daniel Lamb <daniel@discoverygarden.ca>
- * @license  https://opensource.org/licenses/MIT MIT
- * @link     http://www.islandora.ca
  */
 class FedoraApi implements IFedoraApi
 {
@@ -134,11 +130,10 @@ class FedoraApi implements IFedoraApi
     /**
      * Creates a new resource in Fedora.
      *
-     * @param string    $uri            Resource URI
-     * @param string    $content        String or binary content
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     * @param string    $checksum       SHA-1 checksum
+     * @param string    $uri                  Resource URI
+     * @param string    $content              String or binary content
+     * @param array     $headers              HTTP Headers
+     * @param string    $transaction          Transaction id
      *
      * @return ResponseInterface
      */
@@ -146,8 +141,7 @@ class FedoraApi implements IFedoraApi
         $uri = "",
         $content = null,
         $headers = [],
-        $transaction = "",
-        $checksum = ""
+        $transaction = ""
     ) {
         $options = ['http_errors' => false];
 
@@ -156,11 +150,6 @@ class FedoraApi implements IFedoraApi
 
         // Set headers.
         $options['headers'] = $headers;
-
-        // Set query string.
-        if (!empty($checksum)) {
-            $options['query'] = ['checksum' => $checksum];
-        }
 
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
@@ -175,11 +164,10 @@ class FedoraApi implements IFedoraApi
     /**
      * Saves a resource in Fedora.
      *
-     * @param string    $uri            Resource URI
-     * @param string    $content        String or binary content
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     * @param string    $checksum       SHA-1 checksum
+     * @param string    $uri                  Resource URI
+     * @param string    $content              String or binary content
+     * @param array     $headers              HTTP Headers
+     * @param string    $transaction          Transaction id
      *
      * @return ResponseInterface
      */
@@ -187,8 +175,7 @@ class FedoraApi implements IFedoraApi
         $uri,
         $content = null,
         $headers = [],
-        $transaction = "",
-        $checksum = ""
+        $transaction = ""
     ) {
         $options = ['http_errors' => false];
 
@@ -197,11 +184,6 @@ class FedoraApi implements IFedoraApi
 
         // Set headers.
         $options['headers'] = $headers;
-
-        // Set query string.
-        if (!empty($checksum)) {
-            $options['query'] = ['checksum' => $checksum];
-        }
 
         // Ensure uri takes transaction into account.
         $uri = $this->prepareUri($uri, $transaction);
@@ -308,7 +290,7 @@ class FedoraApi implements IFedoraApi
      * Issues a COPY request to Fedora.
      *
      * @param string    $uri            Resource URI
-     * @param array     $destination    Destination URI
+     * @param string    $destination    Destination URI
      * @param string    $transaction    Transaction id
      *
      * @return ResponseInterface
@@ -341,7 +323,7 @@ class FedoraApi implements IFedoraApi
      * Issues a MOVE request to Fedora.
      *
      * @param string    $uri            Resource URI
-     * @param array     $destination    Destination URI
+     * @param string    $destination    Destination URI
      * @param string    $transaction    Transaction id
      *
      * @return ResponseInterface

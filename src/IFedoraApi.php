@@ -12,6 +12,7 @@
  * @package  Islandora
  * @author   Daniel Lamb <daniel@discoverygarden.ca>
  * @author   Nick Ruest <ruestn@gmail.com>
+ * @author   Diego Pino <dpino@metro.org>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     http://www.islandora.ca
  */
@@ -22,13 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Interface for Fedora interaction.  All functions return a PSR-7 response.
- *
- * @category Islandora
- * @package  Islandora
- * @author   Daniel Lamb <daniel@discoverygarden.ca>
- * @license  https://opensource.org/licenses/MIT MIT
- * @link     http://www.islandora.ca
- */
+  */
 interface IFedoraApi
 {
     /**
@@ -70,35 +65,31 @@ interface IFedoraApi
     /**
      * Creates a new resource in Fedora.
      *
-     * @param string    $uri            Resource URI
-     * @param string    $content        String or binary content
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     * @param string    $checksum       SHA-1 checksum
+     * @param string    $uri                  Resource URI
+     * @param string    $content              String or binary content
+     * @param array     $headers              HTTP Headers
+     * @param string    $transaction          Transaction id
      */
     public function createResource(
         $uri = "",
         $content = null,
         $headers = [],
-        $transaction = "",
-        $checksum = ""
+        $transaction = ""
     );
 
     /**
      * Saves a resource in Fedora.
      *
-     * @param string    $uri            Resource URI
-     * @param string    $content        String or binary content
-     * @param array     $headers        HTTP Headers
-     * @param string    $transaction    Transaction id
-     * @param string    $checksum       SHA-1 checksum
+     * @param string    $uri                  Resource URI
+     * @param string    $content              String or binary content
+     * @param array     $headers              HTTP Headers
+     * @param string    $transaction          Transaction id
      */
     public function saveResource(
         $uri,
         $content = null,
         $headers = [],
-        $transaction = "",
-        $checksum = ""
+        $transaction = ""
     );
 
     /**

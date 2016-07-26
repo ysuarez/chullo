@@ -11,6 +11,8 @@
  * @category Islandora
  * @package  Islandora
  * @author   Daniel Lamb <daniel@discoverygarden.ca>
+ * @author   Nick Ruest <ruestn@gmail.com>
+ * @author   Diego Pino <dpino@metro.org>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     http://www.islandora.ca
  */
@@ -19,12 +21,6 @@ namespace Islandora\Chullo;
 
 /**
  * Interface for triplestore interaction.
- *
- * @category Islandora
- * @package  Islandora
- * @author   Daniel Lamb <daniel@discoverygarden.ca>
- * @license  https://opensource.org/licenses/MIT MIT
- * @link     http://www.islandora.ca
  */
 interface ITriplestoreClient
 {
