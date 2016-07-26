@@ -14,7 +14,12 @@ class CreateTransactionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers  Islandora\Chullo\Chullo::createTransaction
+     * @covers  Islandora\Chullo\Chullo::getBaseUri
      * @covers  Islandora\Chullo\FedoraApi::createTransaction
+     * @covers  Islandora\Chullo\FedoraApi::prepareUri
+     * @covers  Islandora\Chullo\FedoraApi::getBaseUri
+     * @covers  Islandora\Chullo\FedoraApi::createTransaction
+     * @covers  Islandora\Chullo\FedoraApi::generateTransactionUri
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsIdOn201()
@@ -28,12 +33,19 @@ class CreateTransactionTest extends \PHPUnit_Framework_TestCase
         $api = new FedoraApi($guzzle);
         $client = new Chullo($api);
 
+        $this->assertEquals($client->getBaseUri(), 'http://localhost:8080/fcrepo/rest');
+
         $result = $client->createTransaction();
         $this->assertSame($result, "tx:abc-123");
     }
     /**
      * @covers  Islandora\Chullo\Chullo::createTransaction
+     * @covers  Islandora\Chullo\Chullo::getBaseUri
      * @covers  Islandora\Chullo\FedoraApi::createTransaction
+     * @covers  Islandora\Chullo\FedoraApi::prepareUri
+     * @covers  Islandora\Chullo\FedoraApi::getBaseUri
+     * @covers  Islandora\Chullo\FedoraApi::createTransaction
+     * @covers  Islandora\Chullo\FedoraApi::generateTransactionUri
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsNullOtherwise()
