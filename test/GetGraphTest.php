@@ -6,14 +6,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Islandora\Chullo\Chullo;
 use Islandora\Chullo\FedoraApi;
 
 class GetGraphTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Chullo\Chullo::getGraph
+     * @covers  Islandora\Chullo\FedoraApi::getGraph
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsContentOn200()
@@ -63,7 +62,7 @@ class GetGraphTest extends \PHPUnit_Framework_TestCase
                 "@value" : "My Sweet Title"
               } ]
             }, {
-              "@id" : 
+              "@id" :
 "http://127.0.0.1:8080/fcrepo/rest/4d/8b/2d/8e/4d8b2d8e-d063-4c9f-aac9-6b285b193ed6/fcr:export?format=jcr/xml",
               "http://purl.org/dc/elements/1.1/format" : [ {
                 "@id" : "http://fedora.info/definitions/v4/repository#jcr/xml"
@@ -77,38 +76,15 @@ EOD;
         $handler = HandlerStack::create($mock);
         $guzzle = new Client(['handler' => $handler]);
         $api = new FedoraApi($guzzle);
-        $client = new Chullo($api);
 
-        $graph = $client->getGraph();
+        $result = $api->getResource("");
+
+        $graph = $api->getGraph($result);
         $title = (string)$graph->get(
             "http://127.0.0.1:8080/fcrepo/rest/4d/8b/2d/8e/4d8b2d8e-d063-4c9f-aac9-6b285b193ed6",
             "dc:title"
         );
-        $this->assertSame($title, "My Sweet Title");
-    }
 
-    /**
-     * @covers  Islandora\Chullo\Chullo::getGraph
-     * @uses    GuzzleHttp\Client
-     */
-    public function testReturnsNullOtherwise()
-    {
-        $mock = new MockHandler([
-            new Response(304),
-            new Response(404),
-        ]);
-
-        $handler = HandlerStack::create($mock);
-        $guzzle = new Client(['handler' => $handler]);
-        $api = new FedoraApi($guzzle);
-        $client = new Chullo($api);
-
-        // 304
-        $result = $client->getGraph("");
-        $this->assertNull($result);
-
-        //404
-        $result = $client->getGraph("");
-        $this->assertNull($result);
+        $this->assertSame("My Sweet Title", $title);
     }
 }

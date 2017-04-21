@@ -230,4 +230,79 @@ class FedoraApi implements IFedoraApi
             $options
         );
     }
+
+    /**
+     * Saves RDF in Fedora.
+     *
+     * @param EasyRdf_Resource  $graph          Graph to save
+     * @param string            $uri            Resource URI
+     * @param array             $headers        HTTP Headers
+     *
+     * @return ResponseInterface
+     */
+    public function saveGraph(
+        \EasyRdf_Graph $graph,
+        $uri = '',
+        $headers = []
+    ) {
+        // Serialze the rdf.
+        $turtle = $graph->serialise('turtle');
+
+        // Checksum it.
+        $checksum_value = sha1($turtle);
+
+        // Set headers.
+        $headers['Content-Type'] = 'text/turtle';
+        $headers['digest'] = 'sha1=' . $checksum_value;
+
+        // Save it.
+        return $this->saveResource($uri, $turtle, $headers);
+    }
+
+    /**
+     * Creates RDF in Fedora.
+     *
+     * @param EasyRdf_Resource  $graph          Graph to save
+     * @param string            $uri            Resource URI
+     * @param array             $headers        HTTP Headers
+     *
+     * @return ResponseInterface
+     */
+    public function createGraph(
+        \EasyRdf_Graph $graph,
+        $uri = '',
+        $headers = []
+    ) {
+        // Serialze the rdf.
+        $turtle = $graph->serialise('turtle');
+
+        // Checksum it.
+        $checksum_value = sha1($turtle);
+
+        // Set headers.
+        $headers['Content-Type'] = 'text/turtle';
+        $headers['digest'] = 'sha1=' . $checksum_value;
+
+        // Save it.
+        return $this->createResource($uri, $turtle, $headers);
+    }
+
+
+    /**
+     * Gets RDF in Fedora.
+     *
+     * @param ResponseInterface   $request    Response received
+     *
+     * @return \EasyRdf_Graph
+     */
+    public function getGraph(ResponseInterface $response)
+    {
+        // Extract rdf as response body and return Easy_RDF Graph object.
+        $rdf = $response->getBody()->getContents();
+        $graph = new \EasyRdf_Graph();
+        if (!empty($rdf)) {
+            $graph->parse($rdf, 'jsonld');
+        }
+        return $graph;
+    }
 }

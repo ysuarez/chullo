@@ -113,4 +113,17 @@ interface IFedoraApi
         $uri = "",
         $headers = []
     );
+
+    /**
+     * Saves RDF in Fedora.
+     *
+     * @param EasyRdf_Resource  $rdf            Graph to save
+     * @param string            $uri            Resource URI
+     * @param array             $headers        HTTP Headers
+     */
+    public function saveGraph(
+        \EasyRdf_Graph $graph,
+        $uri = "",
+        $headers = []
+    );
 }

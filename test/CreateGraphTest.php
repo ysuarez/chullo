@@ -8,11 +8,11 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Islandora\Chullo\FedoraApi;
 
-class SaveGraphTest extends \PHPUnit_Framework_TestCase
+class CreateGraphTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers  Islandora\Chullo\FedoraApi::saveGraph
+     * @covers  Islandora\Chullo\FedoraApi::createGraph
      * @uses    GuzzleHttp\Client
      */
     public function testReturnsTrueOn204()
@@ -25,7 +25,7 @@ class SaveGraphTest extends \PHPUnit_Framework_TestCase
         $guzzle = new Client(['handler' => $handler]);
         $api = new FedoraApi($guzzle);
 
-        $result = $api->saveGraph(new \EasyRdf_Graph());
+        $result = $api->createGraph(new \EasyRdf_Graph());
         $this->assertEquals(204, $result->getStatusCode());
     }
 }
