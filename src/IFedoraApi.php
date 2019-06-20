@@ -134,4 +134,31 @@ interface IFedoraApi
         $uri = "",
         $headers = []
     );
+
+    /**
+     * Creates a version of the resource in Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param string    $timestamp      Timestamp in RFC-1123 format
+     * @param array     $headers        HTTP Headers
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function createVersion(
+        $uri = "",
+        $timestamp = "",
+        $content = null,
+        $headers = []
+    );
+
+    /**
+     * Creates a version of the resource in Fedora.
+     *
+     * @param string    $uri            Resource URI
+     * @param array     $headers        HTTP Headers
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getVersions(
+        $uri = "",
+        $headers = []
+    );
 }

@@ -19,8 +19,10 @@
 namespace Islandora\Chullo;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
+use \RuntimeException;
 
 /**
  * Default implementation of IFedoraApi using Guzzle.
@@ -304,5 +306,84 @@ class FedoraApi implements IFedoraApi
             $graph->parse($rdf, 'jsonld');
         }
         return $graph;
+    }
+
+    /**
+     * Creates version in Fedora.
+     * @param string $uri Fedora Resource URI
+     * @param string $timestamp Timestamp for Memento version
+     * @param string $content String or binary content
+     * @param array $header HTTP Headers
+     *
+     * @return ResponseInterface
+     */
+    public function createVersion(
+        $uri = '',
+        $timestamp = '',
+        $content = null,
+        $headers = []
+    ) {
+        $timemap_uri = $this->getTimemapURI($uri, $headers);
+        if ($timemap_uri == null) {
+            throw new \RuntimeException('Timemap URI is null, cannot create version');
+        }
+        $options = ['http_errors' => false];
+        if ($timestamp != '' && $content != null) {
+            $headers['Memento-Datetime'] = $timestamp;
+            $options['body'] = $content;
+        }
+        $options['headers'] = $headers;
+
+        return $this->client->request(
+            'POST',
+            $timemap_uri,
+            $options
+        );
+    }
+
+    /**
+     * Gets list of versions in Fedora.
+     * @param string $uri Fedora Resource URI
+     * @param array $header HTTP Headers
+     *
+     * @return ResponseInterface
+     */
+    public function getVersions(
+        $uri = '',
+        $headers = []
+    ) {
+        $timemap_uri = $this->getTimemapURI($uri, $headers);
+        if ($timemap_uri == null) {
+            throw new \RuntimeException('Timemap URI is null, cannot create version');
+        }
+        $options = ['http_errors' => false, 'headers' => $headers];
+        return $this->client->request(
+            'GET',
+            $timemap_uri,
+            $options
+        );
+    }
+
+    /**
+     * Helper method to get the Headers for a resource
+     * and parse the timemap header from it
+     * @param string $uri Fedora Resource URI
+     * @param array $header HTTP Headers
+     *
+     * @return string
+     */
+    public function getTimemapURI(
+        $uri = '',
+        $headers = []
+    ) {
+        $resource_headers = $this->getResourceHeaders($uri, $headers);
+        $parsed_link_headers = Psr7\parse_header($resource_headers->getHeader('Link'));
+        $timemap_uri = null;
+        $timemap_index = array_search('timemap', array_column($parsed_link_headers, 'rel'));
+        if (is_int($timemap_index)) {
+            $timemap_uri = $parsed_link_headers[$timemap_index][0];
+            $timemap_uri = trim($timemap_uri, "<> \t\n\r\0\x0B");
+        }
+        return $timemap_uri;
     }
 }
