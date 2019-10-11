@@ -4,7 +4,7 @@ If you are reading this document then you are interested in contributing to the 
 
 ## Workflows
 
-For the time being, the community around this project is centred at the [Islandora Foundation, Fedora 4 Interest Group](https://github.com/Islandora/Islandora-Fedora4-Interest-Group). The group meets on the fourth Friday of each month at 1PM EST. The meetings usually happen via Skype, and meeting announcements/agendas are posted to the [Islandora community list](https://groups.google.com/forum/#!forum/islandora) and the [Islandora developers list](https://groups.google.com/forum/#!forum/islandora-dev). You can view meeting agendas and minutes [here](https://github.com/islandora-interest-groups/Islandora-Fedora4-Interest-Group/tree/master/meetings).
+For the time being, the community around this project is centered at the [Islandora Foundation, Fedora 4 Interest Group](https://github.com/Islandora/Islandora-Fedora4-Interest-Group). The group meets on the fourth Friday of each month at 1PM EST. The meetings usually happen via Skype, and meeting announcements/agendas are posted to the [Islandora community list](https://groups.google.com/forum/#!forum/islandora) and the [Islandora developers list](https://groups.google.com/forum/#!forum/islandora-dev). You can view meeting agendas and minutes [here](https://github.com/islandora-interest-groups/Islandora-Fedora4-Interest-Group/tree/master/meetings).
 
 There is an additional 7.x-2.x Tech Call that occurs each Wednesday at 1:00pm Eastern Daylight Time US (UTC-4). Agendas with call-in details can be found [here](https://github.com/Islandora-CLAW/CLAW/wiki#islandora-7x-2x-tech-calls).
 
@@ -38,7 +38,7 @@ That is great! In this case please send us a pull request as described in sectio
 
 ### Contribute code
 
-Before you set out to contribute code you will need to have completed a [Contributor License Agreement](http://islandora.ca/sites/default/files/islandora_cla.pdf) or be covered by a [Corporate Contributor Licencse Agreement](http://islandora.ca/sites/default/files/islandora_ccla.pdf). The signed copy of the license agreement should be sent to <mailto:community@islandora.ca>
+Before you set out to contribute code you will need to have completed a [Contributor License Agreement](http://islandora.ca/sites/default/files/islandora_cla.pdf) or be covered by a [Corporate Contributor License Agreement](http://islandora.ca/sites/default/files/islandora_ccla.pdf). The signed copy of the license agreement should be sent to <mailto:community@islandora.ca>
 
 _If you are interested in contributing code to Islandora but do not know where to begin:_
 
@@ -72,4 +72,4 @@ In addition, Islandora 7.x-2.x Committers will review contributions for [PSR-4 ]
 
 ## License Agreements
 
-The Islandora Foundation requires that contributors complete a [Contributor License Agreement](http://islandora.ca/sites/default/files/islandora_cla.pdf) or be covered by a [Corporate Contributor Licencse Agreement](http://islandora.ca/sites/default/files/islandora_ccla.pdf). The signed copy of the license agreement should be sent to <a href="mailto:community@islandora.ca?Subject=Contributor%20License%20Agreement" target="_top">community@islandora.ca</a>. This license is for your protection as a contributor as well as the protection of the Foundation and its users; it does not change your rights to use your own contributions for any other purpose.
+The Islandora Foundation requires that contributors complete a [Contributor License Agreement](http://islandora.ca/sites/default/files/islandora_cla.pdf) or be covered by a [Corporate Contributor License Agreement](http://islandora.ca/sites/default/files/islandora_ccla.pdf). The signed copy of the license agreement should be sent to <a href="mailto:community@islandora.ca?Subject=Contributor%20License%20Agreement" target="_top">community@islandora.ca</a>. This license is for your protection as a contributor as well as the protection of the Foundation and its users; it does not change your rights to use your own contributions for any other purpose.
